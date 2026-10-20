@@ -1,3 +1,5 @@
+import { PROJECT_STATUSES, PROJECT_SORTS, projectListOptions, projectListQuery, selectProjects } from './project-list.js';
+
 import { clientActions, ACTION_TYPES } from './actions.js';
 
 import { createBriefUpdates } from './brief-updates.js';
@@ -25,7 +27,7 @@ export function createWorkspace({ icon, esc, services, toast, showModal, closeMe
   const briefUpdates = createBriefUpdates({ projects, budgets: BUDGETS, icon, esc, toast, doc, message });
   const reports = createReports({ projects, icon, esc, toast, doc, message });
   const staff = createStaff({ reports, briefUpdates, projects, icon, esc, toast, message, doc, hub, profiles });
-  const state = { role: '', next: '/workspace', outlet: null, path: '', params: null, q: '', filter: '전체', draft: null, step: 0, context: false, messageDrafts: {}, feedbackDrafts: {}, deliveryDrafts: {}, costReviewDrafts: {} };
+  const state = { role: '', next: '/workspace', outlet: null, path: '', params: null, q: '', filter: '전체', sort: 'recent', draft: null, step: 0, context: false, messageDrafts: {}, feedbackDrafts: {}, deliveryDrafts: {}, costReviewDrafts: {} };
   const settings = createClientSettings({ icon, esc, toast, getRole: () => state.role, refresh });
   projects.forEach(p => { p.client = { ...settings.current('institution'), role: 'institution' }; });
   const newDraft = () => ({ client: { ...settings.current(state.role), role: state.role || 'institution' }, id: '', title: '', region: settings.current(state.role).region, goal: GOALS[0], budget: BUDGETS[0], date: '', services: [], notes: '' });
@@ -45,7 +47,8 @@ export function createWorkspace({ icon, esc, services, toast, showModal, closeMe
     state.outlet.innerHTML = `<div class="ws-shell"><header class="ws-topbar"><a class="ws-logo" href="#/home" aria-label="헤이엔터씨 홈"><img src="./assets/logo-green.png" alt="hey! enter c" width="160" height="40"></a><span class="ws-top-title">PROJECT WORKSPACE</span><span class="ws-demo-label">데모</span><a class="ws-public-link" href="#/home">서비스 사이트 ${icon('up-right')}</a><button class="ws-avatar" data-ws-action="profile" aria-label="계정 정보">${state.role === 'personal' ? '나' : '로'}</button></header><div class="ws-sidebar"><div class="ws-organization">${icon(state.role === 'personal' ? 'person' : 'folder')}<div><strong>${owner()}</strong><span>${state.role === 'personal' ? '개인 프로젝트 공간' : '기관 담당자 체험 공간'}</span></div></div><nav aria-label="워크스페이스 메뉴">${[['home', '/workspace', 'folder', '업무 홈'], ['projects', '/workspace/projects', 'file', '내 프로젝트'], ['actions', '/workspace/actions', 'check', '확인할 일'], ['messages', '/workspace/messages', 'message', '메시지'], ['documents', '/workspace/documents', 'file', '문서함'], ['saved', '/references?saved=1', 'bookmark', '저장한 사례']].map(([id, path, glyph, label]) => `<a href="#${path}" ${active === id ? 'aria-current="page"' : ''}>${icon(glyph)}${label}${id === 'projects' ? `<span>${projects.length}</span>` : id === 'actions' && clientActions(projects).length ? `<span>${clientActions(projects).length}</span>` : ''}</a>`).join('')}</nav><a class="btn primary" href="#/workspace/new" data-ws-action="new">${icon('plus')}새 프로젝트</a><div class="ws-side-note"><strong>작은 아이디어도 좋아요.</strong><p>목표와 필요한 결과물부터<br>차근차근 정리해 보세요.</p><a href="#/references">사례에서 영감 얻기 ${icon('arrow')}</a><a href="#/workspace/settings">${state.role === 'personal' ? '계정·브랜드 정보' : '계정·기관 정보'} ${icon('person')}</a></div><button class="ws-exit" data-ws-action="exit">체험 나가기 ${icon('up-right')}</button></div><div class="ws-main"><div class="ws-demo-strip">화면 체험 중입니다. 입력·검토·메시지는 외부로 전송되지 않으며 새로고침하면 초기화됩니다.</div><div class="ws-content">${content}</div></div></div>`;
   }
   function projectRows(items) {
-    return items.map(p => `<a class="ws-project-row" href="${href(p)}"><span class="ws-project-symbol">${icon('folder')}</span><div><strong>${esc(p.title)}</strong><span>${esc(p.region)} · ${names(p.services)}</span></div>${badge(p.status)}<div class="ws-row-budget"><span>검토 예산 · VAT 포함</span><strong>${p.budget}</strong></div>${icon('arrow')}</a>`).join('');
+    const { counts } = selectProjects(projects);
+    return items.map(p => `<a class="ws-project-row" href="${href(p, p.status === '초안' ? 'brief' : 'overview')}"><span class="ws-project-symbol">${icon('folder')}</span><div><strong>${esc(p.title)}</strong><span>${esc(p.region)} · ${names(p.services)}</span>${counts.get(p.id) ? `<small class="project-attention">${icon('check')}확인할 일 ${counts.get(p.id)}개</small>` : p.status === '초안' ? '<small class="project-draft-hint">초안 이어쓰기</small>' : ''}</div>${badge(p.status)}<div class="ws-row-budget"><span>검토 예산 · VAT 포함</span><strong>${esc(p.budget)}</strong></div>${icon('arrow')}</a>`).join('');
   }
   function actionRows(items) {
     return items.map(item => `<a class="ws-action-row" href="#/workspace/projects/${item.projectId}/${item.tab}" ${item.kind === 'proposal' ? `data-ws-latest="${item.projectId}"` : ''}><span>${icon(item.glyph)}</span><div><small class="action-kind">${ACTION_TYPES[item.kind]}</small><strong>${item.title}</strong><p>${esc(item.projectTitle)} · ${esc(item.detail)}</p></div>${icon('arrow')}</a>`).join('');
@@ -62,18 +65,24 @@ export function createWorkspace({ icon, esc, services, toast, showModal, closeMe
   function dashboard() {
     document.title = '업무 홈 — 헤이엔터씨';
     const pending = clientActions(projects);
-    shell(`${heading('YOUR NEXT LOCAL STORY', '반가워요, ' + owner() + '님.', '우리 지역의 다음 이야기를 함께 만들어가요.', '<a class="btn primary" href="#/workspace/new" data-ws-action="new">새 프로젝트 만들기 ' + icon('plus') + '</a>')}<div class="ws-stats">${[['진행 중인 프로젝트', projects.filter(p => !['초안', '완료'].includes(p.status)).length, 'projects', ''], ['확인할 일', pending.length, 'actions', ''], ['작성 중인 초안', projects.filter(p => p.status === '초안').length, 'projects', '?status=초안']].map(([label, count, route, query]) => `<a href="#/workspace/${route}${query}"><span>${label}</span><strong>${count}<small>개</small></strong>${icon('arrow')}</a>`).join('')}</div><div class="ws-home-columns"><section class="ws-panel ws-todo"><div class="ws-panel-heading"><h2>먼저 확인해 주세요.</h2><a class="text-link" href="#/workspace/actions">전체 보기 ${icon('arrow')}</a></div>${pending.length ? actionRows(pending.slice(0, 4)) : '<p class="ws-muted">지금 확인할 일을 모두 마쳤어요. 새 검토본과 회신이 공유되면 여기에 표시됩니다.</p>'}</section><aside class="ws-start-card"><span class="eyebrow">MAKE IT A GOOD START</span><h2>무엇부터<br>준비하면 좋을까요?</h2><p>결과물의 종류와 활용 채널을 정하면<br>제안을 더 구체적으로 살펴볼 수 있어요.</p><a class="text-link" href="#/budget">예산별 홍보 구성 살펴보기 ${icon('arrow')}</a></aside></div><section class="ws-panel"><div class="ws-panel-heading"><h2>이어서 진행할 프로젝트</h2><a class="text-link" href="#/workspace/projects">전체 보기 ${icon('arrow')}</a></div>${projectRows(projects.filter(p => p.status !== '완료').slice(0, 4))}</section>`, 'home');
+    shell(`${heading('YOUR NEXT LOCAL STORY', '반가워요, ' + owner() + '님.', '우리 지역의 다음 이야기를 함께 만들어가요.', '<a class="btn primary" href="#/workspace/new" data-ws-action="new">새 프로젝트 만들기 ' + icon('plus') + '</a>')}<div class="ws-stats">${[['진행 중인 프로젝트', projects.filter(p => !['초안', '완료'].includes(p.status)).length, 'projects', '?status=진행 중'], ['확인할 일', pending.length, 'actions', ''], ['작성 중인 초안', projects.filter(p => p.status === '초안').length, 'projects', '?status=초안']].map(([label, count, route, query]) => `<a href="#/workspace/${route}${query}"><span>${label}</span><strong>${count}<small>개</small></strong>${icon('arrow')}</a>`).join('')}</div><div class="ws-home-columns"><section class="ws-panel ws-todo"><div class="ws-panel-heading"><h2>먼저 확인해 주세요.</h2><a class="text-link" href="#/workspace/actions">전체 보기 ${icon('arrow')}</a></div>${pending.length ? actionRows(pending.slice(0, 4)) : '<p class="ws-muted">지금 확인할 일을 모두 마쳤어요. 새 검토본과 회신이 공유되면 여기에 표시됩니다.</p>'}</section><aside class="ws-start-card"><span class="eyebrow">MAKE IT A GOOD START</span><h2>무엇부터<br>준비하면 좋을까요?</h2><p>결과물의 종류와 활용 채널을 정하면<br>제안을 더 구체적으로 살펴볼 수 있어요.</p><a class="text-link" href="#/budget">예산별 홍보 구성 살펴보기 ${icon('arrow')}</a></aside></div><section class="ws-panel"><div class="ws-panel-heading"><h2>이어서 진행할 프로젝트</h2><a class="text-link" href="#/workspace/projects">전체 보기 ${icon('arrow')}</a></div>${projectRows(projects.filter(p => p.status !== '완료').slice(0, 4))}</section>`, 'home');
   }
   function projectList(params) {
-    state.filter = ['전체', '초안', '브리프 확인', '제안 검토', '제작 진행', '완료'].includes(params.get('status')) ? params.get('status') : '전체';
+    const options = projectListOptions(params); state.q = options.q; state.filter = options.status; state.sort = options.sort;
     document.title = '내 프로젝트 — 헤이엔터씨';
-    shell(`${heading('MY PROJECTS', '내 프로젝트', '아이디어부터 결과물까지, 프로젝트의 흐름을 한눈에.', '<a class="btn primary" href="#/workspace/new" data-ws-action="new">새 프로젝트 ' + icon('plus') + '</a>')}<div class="ws-list-tools"><div class="ws-search">${icon('folder')}<label class="sr-only" for="ws-project-search">프로젝트 검색</label><input id="ws-project-search" type="search" value="${esc(state.q)}" placeholder="프로젝트 이름 또는 지역 검색" maxlength="100"></div><label class="sr-only" for="ws-status-filter">프로젝트 상태</label><select class="input" id="ws-status-filter">${['전체', '초안', '브리프 확인', '제안 검토', '제작 진행', '완료'].map(s => `<option ${s === state.filter ? 'selected' : ''}>${s}</option>`).join('')}</select></div><div class="ws-result-count" id="ws-project-count" role="status"></div><section class="ws-panel" id="ws-project-results"></section>`, 'projects');
+    shell(`${heading('MY PROJECTS', '내 프로젝트', '아이디어부터 결과물까지, 프로젝트의 흐름을 한눈에.', '<a class="btn primary" href="#/workspace/new" data-ws-action="new">새 프로젝트 ' + icon('plus') + '</a>')}<div class="project-list-tools"><div class="field"><label for="ws-project-search">프로젝트 검색</label><input class="input" id="ws-project-search" type="search" value="${esc(state.q)}" placeholder="프로젝트 이름 또는 지역" maxlength="100"></div><div class="field"><label for="ws-status-filter">프로젝트 상태</label><select id="ws-status-filter">${PROJECT_STATUSES.map(v => `<option ${v === state.filter ? 'selected' : ''}>${v}</option>`).join('')}</select></div><div class="field"><label for="ws-project-sort">정렬</label><select id="ws-project-sort">${Object.entries(PROJECT_SORTS).map(([v, name]) => `<option value="${v}" ${v === state.sort ? 'selected' : ''}>${name}</option>`).join('')}</select></div></div><div class="project-list-caption"><div class="ws-result-count" id="ws-project-count" role="status" aria-live="polite"></div><button class="text-link" data-ws-action="clear-search">조건 초기화 ${icon('close')}</button></div><section class="ws-panel" id="ws-project-results"></section><p class="fine-print project-list-note">확인할 일은 최신 검토본과 읽지 않은 브리프 회신 기준입니다. 입력한 프로젝트는 현재 탭에만 유지되며 새로고침하면 초기화됩니다.</p>`, 'projects');
     listResults();
   }
   function listResults() {
-    const items = projects.filter(p => (state.filter === '전체' || p.status === state.filter) && `${p.title} ${p.region}`.toLowerCase().includes(state.q.toLowerCase()));
-    state.outlet.querySelector('#ws-project-count').textContent = `${items.length}개의 프로젝트`;
-    state.outlet.querySelector('#ws-project-results').innerHTML = items.length ? projectRows(items) : empty('조건에 맞는 프로젝트가 없어요.', '다른 이름이나 지역으로 검색해 보세요.', '<button class="btn secondary" data-ws-action="clear-search">검색 조건 초기화</button>');
+    const { items } = selectProjects(projects, { q: state.q, status: state.filter, sort: state.sort });
+    state.outlet.querySelector('#ws-project-count').textContent = `전체 ${projects.length}개 중 ${items.length}개 프로젝트`;
+    state.outlet.querySelector('#ws-project-results').innerHTML = items.length ? projectRows(items) : empty('조건에 맞는 프로젝트가 없어요.', '검색어나 상태를 바꾸거나 조건을 초기화해 보세요.', '<button class="btn secondary" data-ws-action="clear-search">검색 조건 초기화</button>');
+  }
+  function syncListQuery(push = false) {
+    const params = projectListQuery({ q: state.q, status: state.filter, sort: state.sort });
+    const hash = '#/workspace/projects' + (params.size ? '?' + params : '');
+    if (location.hash !== hash) history[push ? 'pushState' : 'replaceState'](null, '', hash);
+    state.params = params;
   }
   function wizard() {
     state.draft ||= newDraft(); const d = state.draft;
@@ -169,7 +178,7 @@ export function createWorkspace({ icon, esc, services, toast, showModal, closeMe
     if (action === 'exit') { state.role = ''; state.next = '/workspace'; document.querySelectorAll('[data-action="account"]').forEach(b => b.innerHTML = `${icon('person')}워크스페이스 체험`); nav('/home'); }
     if (action === 'profile') { nav('/workspace/settings'); return; }
     if (action === 'context') { state.context = !state.context; const box = state.outlet.querySelector('.ws-detail-layout'); box.classList.toggle('context-open', state.context); el.setAttribute('aria-expanded', String(state.context)); }
-    if (action === 'clear-search') { state.q = ''; state.filter = '전체'; projectList(new URLSearchParams()); }
+    if (action === 'clear-search') { state.q = ''; state.filter = '전체'; state.sort = 'recent'; syncListQuery(true); projectList(state.params); document.querySelector('#ws-project-search')?.focus(); }
     if (action === 'wizard-prev') { captureDraft(); state.step--; refresh(); state.outlet.querySelector('h1').focus(); }
     if (action === 'save-draft') saveDraft();
     if (el.dataset.wsEdit) { const p = projects.find(p => p.id === el.dataset.wsEdit); state.draft = { ...p, services: [...p.services] }; state.step = 0; nav('/workspace/new'); }
@@ -180,7 +189,7 @@ export function createWorkspace({ icon, esc, services, toast, showModal, closeMe
   });
   document.addEventListener('input', event => {
     if (event.target.closest('#ws-project-form')) captureDraft();
-    if (event.target.id === 'ws-project-search') { state.q = event.target.value; listResults(); }
+    if (event.target.id === 'ws-project-search') { state.q = event.target.value; syncListQuery(); listResults(); }
     if (event.target.id === 'ws-message') state.messageDrafts[event.target.closest('form').dataset.project] = event.target.value;
     if (event.target.closest('.production-review-form')?.dataset.delivery) { const form = event.target.closest('form'); state.deliveryDrafts[form.dataset.delivery + ':' + form.dataset.revision] = event.target.value; }
     if (event.target.closest('#ws-budget-review-form')) { const form = event.target.closest('form'); state.costReviewDrafts[form.dataset.project + ':' + form.dataset.version] = event.target.value; }
@@ -189,7 +198,7 @@ export function createWorkspace({ icon, esc, services, toast, showModal, closeMe
   document.addEventListener('change', event => {
     if (event.target.closest('#ws-project-form')) captureDraft();
     if (event.target.id === 'action-project') { const params = new URLSearchParams(state.params); if (event.target.value) params.set('project', event.target.value); else params.delete('project'); nav('/workspace/actions?' + params); }
-    if (event.target.id === 'ws-status-filter') { state.filter = event.target.value; listResults(); history.replaceState(null, '', `#/workspace/projects${state.filter === '전체' ? '' : '?status=' + encodeURIComponent(state.filter)}`); }
+    if (event.target.id === 'ws-status-filter' || event.target.id === 'ws-project-sort') { if (event.target.id === 'ws-status-filter') state.filter = event.target.value; else state.sort = event.target.value; syncListQuery(true); listResults(); }
     if (event.target.id === 'ws-proposal-version') { const p = projects.find(p => state.path.includes('/' + p.id + '/')); p.version = event.target.value; refresh(); }
   });
   document.addEventListener('submit', event => {

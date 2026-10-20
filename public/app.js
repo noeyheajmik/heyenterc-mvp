@@ -1,5 +1,6 @@
 import { createWorkspace } from './workspace.js';
 import { createExplorer } from './explore.js';
+import { createNetwork } from './network.js';
 
 const $ = selector => document.querySelector(selector);
 const icon = name => `<svg aria-hidden="true"><use href="#i-${name}"/></svg>`;
@@ -96,9 +97,6 @@ function budgetResult(goal, budget) {
   explorer.startPlanning({ goal, budget });
 }
 
-function partnerInfo(isArtist = false) {
-  showModal(isArtist ? '지역의 이야기를 빛낼 사람들.' : '함께 만들면, 더 좋은 이야기.', `<p>${isArtist ? '가수·인플루언서·MC와 프로젝트가 만나는 연결을 준비합니다. 행사와 콘텐츠의 목표에 맞춰 필요한 역할과 조건을 함께 검토합니다.' : '영상·디자인·언론 콘텐츠·인쇄 등 다양한 분야의 제작 파트너가 지역의 이야기를 함께 만듭니다.'}</p><div class="partner-types"><div>${icon(isArtist ? 'mic' : 'film')}<h3>${isArtist ? '가수·MC' : '콘텐츠 제작'}</h3><p>${isArtist ? '행사 성격과 관객, 출연 시간·일정에 맞는 만남을 검토합니다.' : '영상·디자인·언론 콘텐츠의 목적과 제작 범위를 정리합니다.'}</p></div><div>${icon(isArtist ? 'spark' : 'print')}<h3>${isArtist ? '인플루언서' : '제작과 실행'}</h3><p>${isArtist ? '채널과 콘텐츠의 적합성, 게시와 활용 조건을 함께 정합니다.' : '인쇄 규격과 수량, 납기와 현장에 필요한 조건을 확인합니다.'}</p></div></div><div class="modal-actions"><button class="btn secondary" data-action="join">협업 파트너로 참여하고 싶어요</button><button class="btn primary" data-action="brief">프로젝트 상담 메모 ${icon('arrow')}</button></div><p class="fine-print" style="margin-top:18px;margin-bottom:0">이번 메인은 서비스 소개 단계입니다. 개별 프로필 탐색과 계정 기능은 후속 화면에서 구현합니다.</p>`, isArtist ? 'ARTISTS & CREATORS' : 'CREATIVE PARTNERS');
-}
 
 function downloadMemo() {
   const url = URL.createObjectURL(new Blob(['\ufeff', memo], { type: 'text/plain;charset=utf-8' }));
@@ -128,8 +126,8 @@ document.addEventListener('click', event => {
   const action = el.dataset.action;
   if (action === 'close-modal') { modal.close(); return; }
   if (action === 'brief') { startBrief(); return; }
-  if (action === 'partners' || action === 'artists') { partnerInfo(action === 'artists'); return; }
-  if (action === 'join') { showModal('새로운 연결을 함께 만들어가요.', `<p>지역 홍보를 함께할 제작 사업자와 아티스트를 위한 협업 안내입니다.</p><div class="partner-types"><div>${icon('film')}<h3>제작 사업자</h3><p>전문 분야, 수행 지역, 제작 범위와 공개 가능한 포트폴리오를 준비해 주세요.</p></div><div>${icon('mic')}<h3>아티스트·관리 담당자</h3><p>활동 소개와 미디어, 출연 가능한 역할, 관리 주체와 협업 조건을 준비해 주세요.</p></div></div><p class="fine-print" style="margin-top:20px">파트너 등록 화면은 다음 단계에서 구현합니다. 지금은 협업 관심 내용을 메모로 정리할 수 있습니다.</p><div class="modal-actions"><button class="btn primary" data-action="partner-memo">협업 관심 메모 만들기 ${icon('arrow')}</button></div>`, 'MAKE SOMETHING TOGETHER'); return; }
+  if (action === 'partners' || action === 'artists') { explorer.navigate('/' + action); return; }
+  if (action === 'join') { explorer.navigate('/join'); return; }
   if (action === 'partner-memo') { startBrief({ type: '파트너 참여', notes: '전문 분야와 포트폴리오, 협업 조건을 정리하고 싶습니다.' }); return; }
   if (action === 'account') { workspace.enter(); return; }
   if (action === 'workspace-draft') { workspace.startProject(briefDraft); return; }
@@ -164,8 +162,9 @@ renderReferences();
 
 const workspace = createWorkspace({ icon, esc, services, toast, showModal, closeMenus });
 
+const network = createNetwork({ icon, esc, toast, startBrief, closeMenus });
 const explorer = createExplorer({
-  workspace,
+  workspace, network,
   references, services, icon, esc, startBrief, closeMenus, toast,
   getSaved: () => saved,
   toggleSaved(id) {

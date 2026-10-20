@@ -11,3 +11,50 @@
   .staff-shell .ws-heading { flex-direction: column; }
   .staff-shell .collab-request-row { grid-template-columns: 44px minmax(0, 1fr) auto; }
 }
+.production-tabs { display: flex; gap: 10px; flex-wrap: wrap; padding: 5px; margin-bottom: 28px; }
+.production-tabs a { padding: 12px 20px; min-height: 46px; border-radius: 999px; font-size: 13px; font-weight: 600; background: #e6e9e0; color: #4d5c4e; }
+.production-tabs a[aria-current=page] { background: #173e2d; color: white; }
+.production-rows article { display: flex; align-items: flex-start; gap: 16px; padding: 24px 0; border-top: 1px solid #e3e7df; }
+.production-rows article > div { flex: 1; min-width: 0; }
+.production-rows h3, .production-delivery h3 { font-size: 15px; line-height: 1.65; margin-bottom: 6px; overflow-wrap: anywhere; }
+.production-rows p, .production-delivery-top p { font-size: 12px; line-height: 1.8; color: #657163; margin: 0 0 10px; }
+.production-edit { display: flex; align-items: center; gap: 8px; flex-shrink: 0; min-height: 44px; padding: 8px 12px; border: 1px solid #d6dfcf; border-radius: 999px; font-size: 12px; }
+.production-edit svg { width: 14px; height: 14px; }
+.production-owner { display: flex; align-items: center; gap: 16px; padding: 20px 0 28px; }
+.production-owner > svg { width: 22px; height: 22px; color: #536158; flex-shrink: 0; }
+.production-owner strong { font-size: 14px; }
+.production-owner p { font-size: 12px; margin: 8px 0 0; color: #657163; }
+.production-delivery { border-top: 1px solid #e3e7df; margin-top: 24px; padding-top: 24px; }
+.production-delivery-top { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 12px; }
+.production-delivery-top > div { min-width: 0; }
+.production-delivery > p { font-size: 14px; line-height: 1.85; margin: 20px 0; overflow-wrap: anywhere; }
+.production-feedback { background: #edf2e8; padding: 18px 20px; border-radius: 14px; margin-block: 20px; }
+.production-feedback strong { font-size: 12px; }
+.production-feedback p { font-size: 13px; line-height: 1.85; margin: 10px 0 0; overflow-wrap: anywhere; }
+.production-empty { padding-block: 18px; }
+.production-form-actions { display: grid; gap: 16px; }
+.production-form-actions > .text-link, .production-cancel { margin-top: 16px; font-size: 12px; min-height: 44px; }
+.production-review-form { border-top: 1px solid #e3e7df; padding-top: 20px; margin-top: 24px; }
+.production-review-form > label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 12px; }
+.production-review-form textarea { width: 100%; min-height: 110px; border: 1px solid #bcc6bc; border-radius: 14px; padding: 14px 16px; font-size: 14px; line-height: 1.8; }
+.production-review-actions { display: flex; gap: 12px; align-items: center; justify-content: space-between; margin-top: 20px; }
+.production-review-actions .btn { font-size: 13px; }
+.production-review-form .fine-print { font-size: 11px; line-height: 1.8; margin: 16px 0 0; color: #657163; }
+@media (max-width: 700px) {
+  .production-tabs { gap: 8px; padding: 4px; }
+  .production-tabs a { font-size: 12px; padding: 12px 15px; }
+  .production-rows article { flex-wrap: wrap; gap: 12px; }
+  .production-rows article > div { flex-basis: calc(100% - 60px); }
+  .production-edit { margin-left: 56px; }
+  .production-review-actions { flex-direction: column; align-items: stretch; }
+  .production-review-actions .btn { width: 100%; }
+  .production-delivery h3 { font-size: 14px; }
+  .production-delivery > p { font-size: 13px; }
+}
+.production-history { margin: 22px 0; border: 1px solid #e0e6da; border-radius: 14px; padding: 0 18px; }
+.production-history summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 12px; min-height: 48px; cursor: pointer; list-style: none; }
+.production-history summary::-webkit-details-marker { display: none; }
+.production-history summary svg { width: 16px; height: 16px; }
+.production-history > div { border-top: 1px solid #e0e6da; padding: 18px 0; }
+.production-history strong { font-size: 12px; }
+.production-history p { font-size: 12px; line-height: 1.85; color: #657163; margin: 12px 0 0; overflow-wrap: anywhere; }

@@ -1,6 +1,6 @@
 import { createWorkspace } from './workspace.js';
 import { createExplorer } from './explore.js';
-import { createNetwork } from './network.js';
+import { createNetwork, PROFILES } from './network.js';
 
 const $ = selector => document.querySelector(selector);
 const icon = name => `<svg aria-hidden="true"><use href="#i-${name}"/></svg>`;
@@ -160,9 +160,10 @@ document.querySelectorAll('svg').forEach(el => el.setAttribute('aria-hidden', 't
 renderServices();
 renderReferences();
 
-const workspace = createWorkspace({ icon, esc, services, toast, showModal, closeMenus });
+const collaborationHub = { requests: [] };
+const workspace = createWorkspace({ hub: collaborationHub, profiles: PROFILES, icon, esc, services, toast, showModal, closeMenus });
 
-const network = createNetwork({ icon, esc, toast, startBrief, closeMenus });
+const network = createNetwork({ icon, esc, toast, startBrief, closeMenus, hub: collaborationHub });
 const explorer = createExplorer({
   workspace, network,
   references, services, icon, esc, startBrief, closeMenus, toast,

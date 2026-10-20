@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node server.mjs",
     "start": "node server.mjs",
-    "check": "node --check public/app.js && node --check public/explore.js && node --check public/workspace.js && node --check public/network.js && node --check public/collaborator.js && node --check public/staff.js && node --check public/production.js && node --check public/budget.js && node --check server.mjs",
+    "check": "node --check public/app.js && node --check public/explore.js && node --check public/workspace.js && node --check public/network.js && node --check public/collaborator.js && node --check public/staff.js && node --check public/production.js && node --check public/budget.js && node --check public/coordination.js && node --check server.mjs",
     "build": "node scripts/build.mjs"
   }
 }

@@ -2,7 +2,7 @@ import { createCollaborator } from './collaborator.js';
 
 const PARTNER_FIELDS = [['video', '영상 제작', 'film'], ['press', '기사·보도', 'press'], ['design', '디자인', 'pen'], ['print', '인쇄·제작', 'print']];
 const ARTIST_FIELDS = [['singer', '가수·공연팀', 'mic'], ['creator', '인플루언서', 'spark'], ['mc', 'MC·진행자', 'person']];
-const PROFILES = [
+export const PROFILES = [
   { id: 'local-frame', kind: 'partners', name: '로컬 프레임 스튜디오', field: 'video', region: '전남', intro: '장소의 매력을 사람의 이야기로 담습니다.', description: '관광지의 풍경과 현장의 사람을 연결하는 영상 제작팀의 가상 프로필입니다. 인터뷰와 여행 동선을 중심으로 콘텐츠의 방향을 정리합니다.', outputs: ['관광·브랜드 소개 영상', '인터뷰·현장 스케치', 'SNS 숏폼'], checks: ['촬영 일수와 이동 동선', '영상 편수·길이와 수정 범위', '원본 제공·음원·초상권 조건'], samples: ['골목을 걷는 여행', '로컬 브랜드의 하루'] },
   { id: 'story-desk', kind: 'partners', name: '스토리 데스크', field: 'press', region: '전국', intro: '지역의 소식을 읽고 싶은 이야기로 정리합니다.', description: '지역 이슈와 브랜드 스토리를 인터뷰·보도자료로 정리하는 가상 파트너입니다. 작성과 배포의 범위를 구분해 검토합니다.', outputs: ['보도자료 기획·작성', '인물·브랜드 인터뷰', '배포 방향 정리'], checks: ['취재·작성·배포 범위', '자료 확인과 수정 일정', '게재 여부와 유료 노출 조건'], samples: ['지역 축제의 시작', '만드는 사람의 이야기'] },
   { id: 'form-local', kind: 'partners', name: '폼 로컬 디자인', field: 'design', region: '서울·경기', intro: '지역의 개성을 일관된 시각 언어로 만듭니다.', description: '축제와 로컬 브랜드의 키비주얼을 온라인·오프라인으로 확장하는 가상 디자인팀입니다.', outputs: ['축제 키비주얼', '포스터·카드뉴스', '브랜드 그래픽'], checks: ['제작물 규격과 종류', '시안·수정 횟수', '폰트·이미지 사용권과 원본'], samples: ['우리 동네의 색', '계절을 담은 포스터'] },
@@ -12,7 +12,7 @@ const PROFILES = [
   { id: 'good-flow', kind: 'artists', name: '좋은흐름 MC', field: 'mc', region: '서울·경기', intro: '행사의 목적과 관객을 연결하는 진행.', description: '지역 축제와 브랜드 행사의 흐름을 설계하는 가상 진행자 프로필입니다.', outputs: ['축제·기념식 진행', '토크·인터뷰 진행', '현장 이벤트 진행'], checks: ['대본·리허설과 행사 시간', '관객 구성과 진행 언어', '이동·대기·현장 운영 조건'], samples: ['지역을 만나는 토크', '함께 여는 축제'] }
 ];
 
-export function createNetwork({ icon, esc, toast, startBrief, closeMenus }) {
+export function createNetwork({ icon, esc, toast, startBrief, closeMenus, hub }) {
   let outlet, currentPath = '', params = new URLSearchParams();
   const selected = new Set();
   const blankProfile = role => ({ role, name: '', field: role === 'artists' ? 'singer' : 'video', region: '전남', intro: '', scope: '', portfolio: '', conditions: '' });
@@ -25,7 +25,7 @@ export function createNetwork({ icon, esc, toast, startBrief, closeMenus }) {
     Object.assign(draft, profileCache[role] || blankProfile(role));
     step = 0; completed = false;
   }
-  const collaborator = createCollaborator({ icon, esc, toast,
+  const collaborator = createCollaborator({ icon, esc, toast, hub,
     getProfile: role => !role || role === draft.role ? draft : profileCache[role] || blankProfile(role),
     editProfile(role) { switchRole(role); completed = false; step = 0; nav('/join?role=' + role); }
   });

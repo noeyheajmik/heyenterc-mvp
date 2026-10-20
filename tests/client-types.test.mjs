@@ -8,7 +8,7 @@ test('brand, personal and institution entries keep distinct defaults', () => {
   assert.equal(roleForBrief('기관·지자체'), 'institution');
   assert.equal(clientType('company').goal, '브랜드·콘텐츠');
   assert.equal(clientType('personal').goal, '브랜드·콘텐츠');
-  assert.equal(clientType('institution').goal, '관광·지역 홍보');
+  assert.equal(clientType('institution').goal, '관광·지역 프로젝트');
   assert.equal(roleForBrief('파트너 참여'), '');
 });
 

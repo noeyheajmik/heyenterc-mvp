@@ -19,5 +19,5 @@ test('campaign drafts combine business questions and services with the selected 
   assert.deepEqual(draft.services, ['creator', 'video']);
   draft.services.push('design');
   assert.deepEqual(campaignPreset('creator').services, ['creator', 'video']);
-  assert.equal(campaignPreset('tourism').goal, '관광·지역 홍보');
+  assert.equal(campaignPreset('tourism').goal, '관광·지역 프로젝트');
 });

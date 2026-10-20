@@ -2,7 +2,7 @@ import { campaignPreset } from './campaign-templates.js';
 
 export function planningPath(context = {}) {
   const preset = campaignPreset(context.template);
-  const clientDefaults = context.client ? {goal:context.client==='institution'?'관광·지역 홍보':'브랜드·콘텐츠',services:context.client==='institution'?['video','creator']:['video','print']} : {};
+  const clientDefaults = context.client ? {goal:context.client==='institution'?'관광·지역 프로젝트':'브랜드·콘텐츠',services:context.client==='institution'?['video','creator']:['video','print']} : {};
   const values = { ...clientDefaults, ...preset, ...context };
   const params = new URLSearchParams();
   for (const key of ['goal', 'budget', 'region', 'schedule', 'amount', 'client', 'template', 'source']) {
@@ -13,6 +13,7 @@ export function planningPath(context = {}) {
 }
 
 export function mvpRoute(path, params = new URLSearchParams()) {
+  if (params.get('goal') === '관광·지역 홍보') { params.set('goal','관광·지역 프로젝트'); return path+'?'+params; }
   if (path === '/services/design') return '/services/print';
   if (params.get('services')?.split(',').includes('design')) { params.set('services',[...new Set(params.get('services').split(',').map(id=>id==='design'?'print':id))].join(',')); return path+'?'+params; }
   if (path === '/workspace/new') return planningPath({template: params.get('template')});

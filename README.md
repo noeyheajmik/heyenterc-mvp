@@ -1,5 +1,7 @@
 # 헤이엔터씨 웹사이트 화면 MVP
 
+[웹사이트 바로 보기](https://noeyheajmik.github.io/heyenterc-mvp/) · [레퍼런스 탐색](https://noeyheajmik.github.io/heyenterc-mvp/#/references)
+
 확정 서비스 기획과 디자인 가이드를 바탕으로 만든 메인·레퍼런스·홍보 구성 화면입니다. 프레임워크나 외부 패키지 설치 없이 Node.js로 실행합니다.
 
 ## 실행
@@ -61,6 +63,10 @@ npm run build
 ## GitHub 동기화와 배포
 
 저장소: [noeyheajmik/heyenterc-mvp](https://github.com/noeyheajmik/heyenterc-mvp)
+
+웹 미리보기: https://noeyheajmik.github.io/heyenterc-mvp/
+
+이 MVP 저장소는 공개 저장소이며 GitHub Pages 배포를 활성화했습니다.
 
 ```sh
 git add .

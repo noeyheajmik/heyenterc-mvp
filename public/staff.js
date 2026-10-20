@@ -36,7 +36,7 @@ export function createStaff({ projects, icon, esc, toast, message, doc }) {
     state.outlet = outlet; state.path = path; state.params = params;
     if (path === '/staff') home();
     else if (path === '/staff/projects' || path === '/staff/proposals') list(path.endsWith('proposals'));
-    else if (/^\/staff\/projects\/[^/]+\/(schedule|people)$/.test(path)) { const parts = path.split('/'); if (!production.render(parts[3], parts[4])) shell(empty('프로젝트를 찾을 수 없어요.'), 'projects'); }
+    else if (/^\/staff\/projects\/[^/]+\/(schedule|people|budget)$/.test(path)) { const parts = path.split('/'); if (!production.render(parts[3], parts[4])) shell(empty('프로젝트를 찾을 수 없어요.'), 'projects'); }
     else if (/^\/staff\/projects\/[^/]+$/.test(path)) detail(path.split('/')[3]);
     else shell(empty('화면을 찾을 수 없어요.'), 'projects');
     return true;

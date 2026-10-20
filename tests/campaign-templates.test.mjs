@@ -15,7 +15,7 @@ test('campaign drafts combine business questions and services with the selected 
   assert.equal(draft.goal, '브랜드·콘텐츠');
   assert.equal(draft.client.organization, '우리 브랜드');
   assert.equal(draft.region, '전국·온라인');
-  assert.match(draft.notes, /광고 활용·게시 유지 기간/);
+  assert.match(draft.notes, /희망 크리에이터·콘텐츠 형식/);
   assert.deepEqual(draft.services, ['creator', 'video']);
   draft.services.push('design');
   assert.deepEqual(campaignPreset('creator').services, ['creator', 'video']);

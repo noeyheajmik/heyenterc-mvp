@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { clientType, projectDraft, roleForBrief } from '../public/client-types.js';
+import { clientType, clientOrganization, projectDraft, roleForBrief } from '../public/client-types.js';
 
 test('brand, personal and institution entries keep distinct defaults', () => {
   assert.equal(roleForBrief('기업·브랜드'), 'company');
@@ -33,4 +33,11 @@ test('project snapshots retain profile information and service choices independe
   assert.deepEqual(draft.services, ['video', 'creator']);
   assert.equal(draft.goal, '브랜드·콘텐츠');
   assert.equal(draft.notes, '제품 출시');
+});
+
+test('missing organization names never relabel a company or institution as a personal request', () => {
+  assert.equal(clientOrganization({ role: 'company', organization: '' }), '기업·브랜드명 미작성');
+  assert.equal(clientOrganization({ role: 'institution' }), '기관명 미작성');
+  assert.equal(clientOrganization({ role: 'personal', organization: '' }), '개인 의뢰');
+  assert.equal(clientOrganization({ role: 'company', organization: '우리 브랜드' }), '우리 브랜드');
 });

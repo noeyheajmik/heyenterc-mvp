@@ -1,3 +1,5 @@
+import { clientOrganization } from './client-types.js';
+import { campaignRows } from './campaign-brief.js';
 import { budgetTotals, won } from './budget.js';
 
 export function projectSummary(p) {
@@ -12,7 +14,8 @@ export function projectSummary(p) {
   ];
   if (p.briefUpdates?.length) checks.push({ label: '브리프 보완 요청 검토', complete: p.briefUpdates.every(u => u.status === '검토 완료'), detail: `${p.briefUpdates.filter(u => u.status === '검토 완료').length} / ${p.briefUpdates.length} 검토 완료`, tab: 'brief' });
   const sections = [
-    { title: '프로젝트 기본 정보', rows: [['프로젝트', p.title], ['홍보 지역', p.region], ['의뢰 담당자', p.client?.displayName || '미정'], ['기관·브랜드', p.client?.organization || '개인 의뢰'], ['부서·팀', p.client?.department || '미작성'], ['홍보 목적', p.goal], ['진행 상태', p.status], ['담당 매니저', p.manager || '배정 전'], ['희망 완료일', p.date || '일정 협의'], ['의뢰자 검토 예산 · VAT 포함', p.budget]] },
+    { title: '프로젝트 기본 정보', rows: [['프로젝트', p.title], ['홍보 지역', p.region], ['의뢰 담당자', p.client?.displayName || '미정'], ['기관·브랜드', clientOrganization(p.client)], ['부서·팀', p.client?.department || '미작성'], ['홍보 목적', p.goal], ['진행 상태', p.status], ['담당 매니저', p.manager || '배정 전'], ['희망 완료일', p.date || '일정 협의'], ['의뢰자 검토 예산 · VAT 포함', p.budget]] },
+    ...(campaignRows(p.campaign).length ? [{ title: '캠페인 기획 조건', rows: campaignRows(p.campaign) }] : []),
     { title: '홍보 방향과 제안', rows: [['요청 내용', p.notes || '미작성'], ['최신 제안', p.proposal ? p.latestVersion || p.version : '아직 없음'], ['제안 검토', p.proposal ? p.reviewed ? '구성 검토 완료' : '검토 대기' : '제안 미공유'], ['최근 수정 의견', p.feedback || '없음']] },
     ...(p.briefUpdates?.length ? [{ title: '브리프 보완 요청', rows: p.briefUpdates.map(u => [u.version + ' · ' + u.reason, `${u.status}\n${u.details}\n요청 예산(VAT 포함): ${u.budget || '변경 요청 없음'}\n요청 희망일: ${u.date || '변경 요청 없음'}\n검토 메모: ${u.reviewNote || '아직 없음'}`]) }] : []),
     { title: '제작 일정', rows: tasks.length ? tasks.map(t => [t.title, `${t.date || t.due || '일정 협의'} · ${t.stage}`]) : [['등록 상태', '일정 미등록']] },

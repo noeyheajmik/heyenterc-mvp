@@ -11,7 +11,7 @@ export function projectSummary(p) {
     { label: '결과물 검토메모 확인', complete: !!deliverables.length && deliverables.every(d => d.status === '메모 확인 완료'), detail: deliverables.length ? `${deliverables.filter(d => d.status === '메모 확인 완료').length} / ${deliverables.length} 확인` : '검토메모 미공유', tab: 'schedule' }
   ];
   const sections = [
-    { title: '프로젝트 기본 정보', rows: [['프로젝트', p.title], ['홍보 지역', p.region], ['홍보 목적', p.goal], ['진행 상태', p.status], ['담당 매니저', p.manager || '배정 전'], ['희망 완료일', p.date || '일정 협의'], ['의뢰자 검토 예산 · VAT 포함', p.budget]] },
+    { title: '프로젝트 기본 정보', rows: [['프로젝트', p.title], ['홍보 지역', p.region], ['의뢰 담당자', p.client?.displayName || '미정'], ['기관·브랜드', p.client?.organization || '개인 의뢰'], ['부서·팀', p.client?.department || '미작성'], ['홍보 목적', p.goal], ['진행 상태', p.status], ['담당 매니저', p.manager || '배정 전'], ['희망 완료일', p.date || '일정 협의'], ['의뢰자 검토 예산 · VAT 포함', p.budget]] },
     { title: '홍보 방향과 제안', rows: [['요청 내용', p.notes || '미작성'], ['최신 제안', p.proposal ? p.latestVersion || p.version : '아직 없음'], ['제안 검토', p.proposal ? p.reviewed ? '구성 검토 완료' : '검토 대기' : '제안 미공유'], ['최근 수정 의견', p.feedback || '없음']] },
     { title: '제작 일정', rows: tasks.length ? tasks.map(t => [t.title, `${t.date || t.due || '일정 협의'} · ${t.stage}`]) : [['등록 상태', '일정 미등록']] },
     { title: '프로젝트 참여자', rows: participants.length ? participants.map(person => [person.name, `${person.kind} · ${person.role} · ${person.status}`]) : [['등록 상태', '추가 참여자 없음']] },

@@ -128,3 +128,17 @@
 .network-heading-actions .btn { min-height: 54px; min-width: 220px; justify-content: space-between; padding: 16px 24px; font-size: 14px; }
 @media (max-width: 1200px) { .network-heading-actions { align-items: stretch; } }
 @media (max-width: 600px) { .network-heading-actions .btn { min-width: 0; width: 100%; } }
+
+.assignment-panel { margin-top: 24px; padding-top: 24px; border-top: 1px solid #e0e5dc; min-width: 0; }
+.assignment-panel h3 { margin: 0; font-size: 16px; line-height: 1.5; }
+.assignment-panel h4 { font-size: 14px; margin: 28px 0 14px; }
+.assignment-panel .ws-muted { font-size: 13px; line-height: 1.8; }
+.assignment-panel .ws-panel-heading { flex-wrap: wrap; gap: 12px; }
+.assignment-checks { list-style: none; padding: 0; margin: 18px 0 24px; }
+.assignment-checks li { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; align-items: start; gap: 10px; padding: 12px 0; font-size: 13px; line-height: 1.7; }
+.assignment-checks svg { width: 18px; height: 18px; margin-top: 2px; color: #536158; }
+.assignment-checks small { color: #657163; white-space: nowrap; }
+.assignment-checks span, .assignment-note { overflow-wrap: anywhere; }
+.assignment-note { border-top: 1px solid #e0e5dc; padding: 16px 0; font-size: 13px; line-height: 1.8; }
+.assignment-note p { margin: 8px 0 0; color: #536158; }
+@media (max-width: 700px) { .assignment-panel .btn { width: 100%; } }

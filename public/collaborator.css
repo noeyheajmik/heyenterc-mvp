@@ -155,3 +155,19 @@
 .ws-detail-main > .brief-updates { margin-top: 28px; }
 .brief-updates .field { margin-bottom: 22px; }
 .brief-updates .form-row { align-items: start; }
+
+.action-tools { margin-bottom: 24px; }
+.action-tools > .field { max-width: 480px; margin-bottom: 24px; }
+.action-tools select { width: 100%; }
+.action-filters { display: flex; flex-wrap: wrap; gap: 10px; padding: 4px; }
+.action-filters a { display: inline-flex; align-items: center; gap: 10px; min-height: 46px; border-radius: 999px; padding: 12px 18px; background: #e9ede5; color: #536158; font-size: 13px; }
+.action-filters a[aria-current=page] { background: #173e2d; color: white; }
+.action-filters a span { font-size: 11px; font-variant-numeric: tabular-nums; }
+.action-filters a:focus-visible { outline: 2px solid #173e2d; outline-offset: 3px; }
+.action-result-count { color: #657163; font-size: 13px; margin: 0 0 18px; }
+.ws-action-row .action-kind { display: block; margin-bottom: 8px; color: #657163; font-size: 11px; }
+.ws-action-row > div { min-width: 0; overflow-wrap: anywhere; }
+.action-list .ws-action-row:first-child { border-top: 0; }
+.action-disclosure { margin-top: 20px; }
+.brief-read-action { margin: 20px 0; }
+@media (max-width: 700px) { .action-filters { gap: 8px; } .action-filters a { padding: 12px 14px; font-size: 12px; } .action-tools > .field { max-width: none; } }

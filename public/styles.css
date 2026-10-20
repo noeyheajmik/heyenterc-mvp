@@ -1,5 +1,4 @@
-@font-face { font-family: Pretendard; src: url("./assets/PretendardVariable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
-:root { --green: #00da4a; --green-hover: #00c844; --green-press: #00b841; --green-text: #007a33; --forest: #153b29; --mint: #e8f8ed; --ink: #11110d; --muted: #667064; --paper: #f5f5f2; --line: #dde4da; --input-border: #71806e; --font: Pretendard,-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif; }
+:root { --green: #00da4a; --green-hover: #00c844; --green-press: #00b841; --green-text: #007a33; --forest: #153b29; --mint: #e8f8ed; --ink: #11110d; --muted: #667064; --paper: #f5f5f2; --line: #dde4da; --input-border: #71806e; --font: 'Plus Jakarta Sans','Wanted Sans',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif; }
 * { box-sizing: border-box; }
 html { scroll-behavior: auto; scroll-padding-top: 118px; }
 body { margin: 0px; font-family: var(--font); font-size: 16px; line-height: 1.65; letter-spacing: -0.01em; color: var(--ink); background: rgb(255, 255, 255); -webkit-font-smoothing: antialiased; }

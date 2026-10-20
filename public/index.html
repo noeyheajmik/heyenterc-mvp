@@ -5,11 +5,13 @@
   <meta name="theme-color" content="#ffffff">
   <meta name="description" content="지역의 매력을 더 많은 사람에게. 영상 제작부터 아티스트 섭외, 축제와 콘텐츠까지. 헤이엔터씨에서 예산에 맞는 지역 홍보를 시작하세요.">
   <title>헤이엔터씨 — 지역의 매력을 더 많은 사람에게</title>
-  <link rel="preload" href="./assets/PretendardVariable.woff2" as="font" type="font/woff2" crossorigin="">
+  <link rel="preload" href="./assets/WantedSansVariable.woff2" as="font" type="font/woff2" crossorigin="">
+  <link rel="preload" href="./assets/PlusJakartaSansVariable.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="./assets/jeju-coast.jpg" as="image" fetchpriority="high">
   <link rel="stylesheet" href="./styles.css">
   <link rel="stylesheet" href="./explore.css">
   <link rel="stylesheet" href="./workspace.css">
+  <link rel="stylesheet" href="./brand-theme.css">
 </head>
 <body>
   <svg class="svg-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -40,7 +42,6 @@
     <div class="header-inner">
       <a class="brand" href="#" aria-label="헤이엔터씨 홈"><img src="./assets/logo-green.png" alt="hey! enter c" width="180" height="45"></a>
       <div class="header-right">
-        <div class="utility-nav"><button data-action="join">파트너로 함께하기 <svg aria-hidden="true"><use href="#i-up-right"></use></svg></button><span></span><button data-action="account"><svg aria-hidden="true"><use href="#i-person"></use></svg>워크스페이스 체험</button></div>
         <nav class="primary-nav" aria-label="주 메뉴">
           <div class="nav-dropdown">
             <button class="nav-link" id="services-toggle" aria-expanded="false" aria-controls="services-menu">서비스 <svg aria-hidden="true"><use href="#i-chevron"></use></svg></button>
@@ -53,6 +54,7 @@
           <a class="nav-link" href="#/budget">홍보 구성</a>
           <button class="nav-link" data-action="partners">파트너</button>
           <button class="nav-link" data-action="artists">아티스트</button>
+          <button class="nav-account" data-action="account">워크스페이스 체험</button>
           <button class="btn primary nav-cta" data-action="brief">제안 요청하기 <svg aria-hidden="true"><use href="#i-up-right"></use></svg></button>
         </nav>
       </div>
@@ -65,17 +67,18 @@
 
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
-      <img class="hero-image" src="./assets/jeju-coast.jpg" alt="바다와 마을이 어우러진 제주 해안 풍경" width="2200" height="1236" fetchpriority="high">
-      <div class="hero-shade"></div>
       <div class="hero-content">
         <span class="hero-eyebrow"><span></span>지역의 가능성을 연결하다</span>
-        <h1 id="hero-title">우리 지역의 매력,<br><em>더 많은 사람에게.</em></h1>
-        <p>영상 제작부터 아티스트 섭외, 축제와 콘텐츠까지.<br>예산에 맞는 지역 홍보, 헤이엔터씨와 시작하세요.</p>
+        <h1 id="hero-title">우리 지역의 매력,<br><em>더 많은<br>사람에게.</em></h1>
+        <p>영상 제작부터 아티스트 섭외, 축제와 콘텐츠까지.<br>우리 지역에 꼭 맞는 홍보를 시작하세요.</p>
         <div class="hero-actions"><a class="btn primary" href="#/budget">예산에 맞는 홍보 찾기 <svg aria-hidden="true"><use href="#i-arrow"></use></svg></a><a class="hero-secondary" href="#/references">레퍼런스 보기 <svg aria-hidden="true"><use href="#i-arrow"></use></svg></a></div>
         <span class="hero-footnote">기획부터 실행까지, 전담 매니저와 함께합니다.</span>
       </div>
-      <div class="hero-location"><svg aria-hidden="true"><use href="#i-pin"></use></svg><span>JEJU, KOREA<span>지역의 이야기를 담는 새로운 시선</span></span></div>
-      <a class="hero-scroll" href="#connections" aria-label="아래 콘텐츠 보기"><span>DISCOVER MORE</span><svg aria-hidden="true"><use href="#i-arrow"></use></svg></a>
+      <div class="hero-art">
+        <div class="hero-media"><img class="hero-image" src="./assets/jeju-coast.jpg" alt="바다와 마을이 어우러진 제주 해안 풍경. 홍보 프로젝트의 분위기 이미지입니다." width="2200" height="1236" fetchpriority="high"><span class="hero-image-note">JEJU, KOREA · 분위기 이미지</span><div class="hero-media-copy"><span>LOCAL IS<br>LIMITLESS.</span><p>가까운 곳에서 발견하는,<br>새로운 가능성.</p></div></div>
+        <div class="hero-story-card"><span class="hero-story-icon"><svg aria-hidden="true"><use href="#i-film"></use></svg></span><div><small>YOUR NEXT LOCAL STORY</small><strong>영상으로 만나는 우리 지역</strong></div><svg aria-hidden="true"><use href="#i-up-right"></use></svg></div>
+        <div class="hero-sound-card"><svg aria-hidden="true"><use href="#i-mic"></use></svg><span>사람과 이야기가<br>만나는 순간.</span><div class="sound-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+      </div>
     </section>
 
     <section class="connections container" id="connections" aria-label="공식 소개 프로젝트의 협업 기관과 브랜드">
@@ -97,7 +100,7 @@
         <div class="budget-intro"><span class="eyebrow">A PLAN THAT FITS YOUR BUDGET</span><h2 id="budget-title">이 예산으로,<br>어디까지 가능할까요?</h2><p>알리고 싶은 것과 생각한 예산을 알려주세요.<br>우리 지역에 맞는 홍보의 방향을 찾아드립니다.</p><div class="budget-assurance"><svg aria-hidden="true"><use href="#i-check"></use></svg><span>예산이 정해지지 않아도 괜찮아요.</span></div><div class="budget-assurance"><svg aria-hidden="true"><use href="#i-check"></use></svg><span>세부 구성은 매니저와 함께 다듬어요.</span></div></div>
         <form class="budget-form" id="budget-form">
           <fieldset><legend>어떤 이야기를 알리고 싶으세요?</legend><div class="goal-options"><label><input type="radio" name="goal" value="관광·지역 홍보" checked=""><span>관광·지역 홍보</span></label><label><input type="radio" name="goal" value="축제·행사"><span>축제·행사</span></label><label><input type="radio" name="goal" value="브랜드·콘텐츠"><span>브랜드·콘텐츠</span></label></div></fieldset>
-          <div class="field"><label for="budget-select">생각하고 계신 총 예산</label><div class="select-wrap"><select id="budget-select" name="budget"><option value="미정">아직 정해지지 않았어요</option>500만원 미만<option value="500만~1,000만원">500만~1,000만원</option><option value="1,000만~3,000만원" selected="">1,000만~3,000만원</option><option value="3,000만~5,000만원">3,000만~5,000만원</option><option value="5,000만원 이상">5,000만원 이상</option></select><svg aria-hidden="true"><use href="#i-chevron"></use></svg></div><small>VAT 포함 총 예산을 기준으로 선택해 주세요.</small></div>
+          <div class="field"><label for="budget-select">생각하고 계신 총 예산</label><div class="select-wrap"><select id="budget-select" name="budget"><option value="미정">아직 정해지지 않았어요</option><option value="500만원 미만">500만원 미만</option><option value="500만~1,000만원">500만~1,000만원</option><option value="1,000만~3,000만원" selected="">1,000만~3,000만원</option><option value="3,000만~5,000만원">3,000만~5,000만원</option><option value="5,000만원 이상">5,000만원 이상</option></select><svg aria-hidden="true"><use href="#i-chevron"></use></svg></div><small>VAT 포함 총 예산을 기준으로 선택해 주세요.</small></div>
           <button class="btn primary full-width" type="submit">가능한 홍보 방향 살펴보기 <svg aria-hidden="true"><use href="#i-arrow"></use></svg></button>
           <p class="form-caption">먼저 방향을 살펴보세요. 실제 견적은 상담 후 안내됩니다.</p>
         </form>

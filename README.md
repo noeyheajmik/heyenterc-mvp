@@ -50,7 +50,8 @@ npm run build
 - 제주 해안: rawkkim / [Unsplash](https://unsplash.com/photos/RKSgg04wt7E), photo-1666348185731-0d20e028ff02
 - 공연 분위기: Unsplash, photo-1470229722913-7c0e2dbbafd3
 - 숲 분위기: Unsplash, photo-1441974231531-c6227db76b6e
-- [Pretendard](https://github.com/orioncactus/pretendard), v1.3.9, SIL Open Font License
+- 한글: [Wanted Sans](https://github.com/wanteddev/wanted-sans), SIL Open Font License
+- 영문: [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans), SIL Open Font License
 
 서체와 사진은 로컬 자산으로 제공하므로 페이지 실행 중 외부 CDN 요청이 필요하지 않습니다.
 
@@ -86,3 +87,9 @@ git push origin main
 `main`에 푸시하면 GitHub Actions에서 코드 검사와 정적 빌드를 실행합니다. Pages를 활성화하고 저장소 Actions 변수 `PAGES_ENABLED`를 `true`로 설정하면 같은 워크플로에서 자동 배포합니다. Pages는 GitHub Actions를 배포 소스로 사용합니다. 비공개 저장소의 Pages 지원 여부는 GitHub 요금제에 따라 다릅니다.
 
 자산 경로는 상대 경로여서 저장소 하위 주소에서도 작동합니다. 계정·DB·비밀 키는 사용하지 않습니다.
+
+## 현재 UI 스타일
+
+Linktree 공개 사이트를 참고해 캡슐형 탐색, 큰 굵은 제목, 둥근 카드, 넓은 색면, 분할형 히어로를 적용했습니다. 기존 메인 컬러 `#00DA4A`를 유지하며 딥그린 `#173E2D`, 크림 `#F3F3ED`, 라일락 `#E8DDFB`, 핑크 `#F7D5DF`를 보조색으로 사용합니다. 공통 변경은 `public/brand-theme.css`에서 관리합니다.
+
+한글은 Wanted Sans, 영문·숫자는 Plus Jakarta Sans를 사용합니다. [Linktree의 공식 소개](https://linktr.ee/blog/the-story-behind-linktrees-brand-new-typeface)에 따르면 Link Sans는 Linktree 전용 서체입니다. 프로젝트에는 Link Sans 사용 권한이 확인된 파일이 없어 유사한 공개 서체를 적용했습니다. Link Sans 자체를 배포한 상태는 아닙니다.

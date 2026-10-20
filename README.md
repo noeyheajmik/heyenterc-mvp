@@ -93,3 +93,5 @@ git push origin main
 Linktree 공개 사이트를 참고해 캡슐형 탐색, 큰 굵은 제목, 둥근 카드, 넓은 색면, 분할형 히어로를 적용했습니다. 기존 메인 컬러 `#00DA4A`를 유지하며 딥그린 `#173E2D`, 크림 `#F3F3ED`, 라일락 `#E8DDFB`, 핑크 `#F7D5DF`를 보조색으로 사용합니다. 공통 변경은 `public/brand-theme.css`에서 관리합니다.
 
 한글은 Wanted Sans, 영문·숫자는 Plus Jakarta Sans를 사용합니다. [Linktree의 공식 소개](https://linktr.ee/blog/the-story-behind-linktrees-brand-new-typeface)에 따르면 Link Sans는 Linktree 전용 서체입니다. 프로젝트에는 Link Sans 사용 권한이 확인된 파일이 없어 유사한 공개 서체를 적용했습니다. Link Sans 자체를 배포한 상태는 아닙니다.
+
+업무·제안 카드와 아이콘은 중립 배경과 차콜 톤으로 통일했습니다. 프로젝트 아이콘 타일은 44×44px이며, 셀렉트는 하나의 안쪽 화살표를 사용합니다. 라디오·체크박스는 제목 기준선에 맞춰 배치하고 키보드 포커스를 카드 테두리로 표시합니다. 푸터의 대형 타이포는 제거했습니다.

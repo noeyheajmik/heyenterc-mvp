@@ -152,3 +152,14 @@
   .network-form-actions .text-link { justify-content: center; }
   .network-results-heading .text-link { font-size: 12px; }
 }
+
+.join-region { margin: 0 0 28px; padding: 0; border: 0; min-width: 0; }
+.join-region legend { font-size: 14px; font-weight: 600; margin-bottom: 16px; }
+.join-region-selects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.network-join-form .join-region-selects .field { margin-bottom: 0; }
+.join-region .field > label { color: #657163; font-size: 12px; }
+.join-region select { width: 100%; min-width: 0; min-height: 54px; }
+.join-region select:disabled { background-color: #edf0ea; color: #657163; cursor: default; opacity: 1; }
+.join-region-help, .join-region-selected { font-size: 12px; line-height: 1.8; color: #657163; margin: 14px 0 0; }
+.join-region-selected { color: #173e2d; font-weight: 600; }
+@media (max-width: 700px) { .join-region-selects { grid-template-columns: minmax(0, 1fr); gap: 18px; } }

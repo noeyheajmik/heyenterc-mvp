@@ -183,3 +183,33 @@
 .project-list-note { margin-top: 20px; line-height: 1.8; }
 @media (max-width: 1000px) { .project-list-tools { grid-template-columns: repeat(2, minmax(0, 1fr)); } .project-list-tools .field:first-child { grid-column: 1 / -1; } }
 @media (max-width: 600px) { .project-list-tools { gap: 20px 14px; } .project-list-tools .field > label { font-size: 12px; } .project-list-tools select { font-size: 12px; padding-left: 14px; padding-right: 36px; } .project-list-caption .ws-result-count { font-size: 12px; } }
+
+.document-library-filter { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.3fr) minmax(130px, .8fr) auto; align-items: end; gap: 20px; margin: 0 0 24px; }
+.document-library-filter input, .document-library-filter select { width: 100%; min-width: 0; }
+.document-library-filter .btn { min-height: 52px; white-space: nowrap; font-size: 13px; }
+.library-result-heading, .library-project-context { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 22px; }
+.library-result-heading { font-size: 13px; color: #657163; }
+.library-result-heading .text-link { min-height: 44px; }
+.library-project-context { padding: 20px 24px; border-radius: 20px; border: 1px solid #dce4d6; }
+.library-project-context > a { min-width: 0; overflow-wrap: anywhere; line-height: 1.8; }
+.library-project-context > button { flex-shrink: 0; }
+.library-document-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.library-document-card { min-width: 0; border-radius: 28px; background: white; padding: 26px; border: 1px solid #e0e5dc; }
+.library-document-open { display: grid; grid-template-columns: 44px minmax(0, 1fr) 18px; gap: 14px; width: 100%; text-align: left; align-items: start; border-radius: 12px; }
+.library-document-open > svg { width: 18px; height: 18px; margin-top: 13px; color: #536158; }
+.library-document-open h2 { font-size: 17px; line-height: 1.6; letter-spacing: -.03em; margin: 6px 0 0; overflow-wrap: anywhere; }
+.library-document-meta { display: block; color: #657163; font-size: 11px; line-height: 1.7; }
+.library-document-open p { grid-column: 1 / -1; margin: 8px 0 0; font-size: 12px; line-height: 1.9; color: #657163; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; min-height: 46px; }
+.library-document-open:hover h2 { text-decoration: underline; text-underline-offset: 4px; }
+.library-document-project { display: flex; align-items: center; gap: 10px; margin-top: 22px; padding-top: 18px; border-top: 1px solid #e0e5dc; color: #536158; min-height: 44px; font-size: 12px; line-height: 1.7; }
+.library-document-project span { min-width: 0; overflow-wrap: anywhere; }
+.library-document-project svg { width: 16px; height: 16px; flex-shrink: 0; }
+.library-document-project svg:last-child { margin-left: auto; }
+.library-disclosure { margin-top: 24px; line-height: 1.9; }
+@media (max-width: 1100px) { .document-library-filter { grid-template-columns: repeat(2, minmax(0, 1fr)); } .document-library-filter .field:first-child { grid-column: 1 / -1; } .document-library-filter > .btn { grid-column: 1 / -1; justify-self: start; } }
+@media (max-width: 700px) { .library-document-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; } .document-library-filter { gap: 20px 14px; } .document-library-filter .field label { font-size: 12px; } .document-library-filter select { font-size: 12px; padding-left: 14px; padding-right: 36px; } .document-library-filter > .btn { width: 100%; } .library-document-card { padding: 24px; } .library-project-context { padding: 20px; } .library-project-context .btn { width: 100%; } }
+.document-library-filter .input, .document-library-filter select, .document-library-filter .btn { min-height: 54px; height: 54px; }
+.project-list-tools .input, .project-list-tools select { min-height: 54px; height: 54px; }
+.library-document-card { display: flex; flex-direction: column; }
+.library-document-open { padding-bottom: 22px; }
+.library-document-project { margin-top: auto; }

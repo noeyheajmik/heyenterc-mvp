@@ -1,3 +1,5 @@
+import { documentTypes, documentLibraryOptions, documentLibraryQuery, selectDocuments } from './document-library.js';
+
 import { PROJECT_STATUSES, PROJECT_SORTS, projectListOptions, projectListQuery, selectProjects } from './project-list.js';
 
 import { clientActions, ACTION_TYPES } from './actions.js';
@@ -128,6 +130,13 @@ export function createWorkspace({ icon, esc, services, toast, showModal, closeMe
     else content = overview(p);
     shell(`<a class="ws-back" href="#/workspace/projects">${icon('arrow')}내 프로젝트</a><div class="ws-detail-heading"><div><div>${badge(p.status)}<span class="ws-small-label">${p.id.startsWith('demo-') ? '체험 프로젝트' : '샘플 프로젝트'}</span></div><h1 tabindex="-1">${esc(p.title)}</h1><p>${esc(p.region)} · ${p.goal}</p></div><button class="btn secondary small" data-ws-action="context" aria-expanded="${state.context}">프로젝트 요약 ${icon('folder')}</button></div><div class="ws-project-facts"><span>검토 예산 <strong>${p.budget}</strong></span><span>완료 일정 <strong>${p.date || '협의 중'}</strong></span><span>담당 <strong>${p.manager ? '샘플 매니저' : '배정 전'}</strong></span></div><nav class="ws-project-tabs" aria-label="프로젝트 메뉴">${TABS.map(([id, name]) => `<a href="${href(p, id)}" ${tab === id ? 'aria-current="page"' : ''}>${name}${id === 'messages' && p.messages.length ? `<span>${p.messages.length}</span>` : ''}</a>`).join('')}</nav><div class="ws-detail-layout ${state.context ? 'context-open' : ''}"><div class="ws-detail-main">${content}</div><aside class="ws-context"><span class="eyebrow">PROJECT CONTEXT</span><h2>프로젝트 맥락</h2><dl><div><dt>프로젝트 상태</dt><dd>${p.status}</dd></div><div><dt>검토 예산 · VAT 포함</dt><dd>${p.budget}</dd></div><div><dt>희망 완료일</dt><dd>${p.date || '일정 협의'}</dd></div><div><dt>홍보 분야</dt><dd>${names(p.services)}</dd></div><div><dt>담당 매니저</dt><dd>${p.manager || '배정 전'}</dd></div></dl><a class="btn secondary full-width" href="${href(p, 'messages')}">프로젝트 대화 ${icon('message')}</a><p>현재 화면의 데이터는 체험용입니다.</p></aside></div>`, 'projects');
   }
+  function documentLibrary(params) {
+    document.title = '문서함 — 헤이엔터씨';
+    const options = documentLibraryOptions(projects, params), types = documentTypes(projects);
+    const items = selectDocuments(projects, options), total = selectDocuments(projects).length;
+    const selected = projects.find(p => p.id === options.project);
+    shell(`${heading('EVERY DOCUMENT, IN CONTEXT', '문서함', '프로젝트의 브리프와 검토본, 자료 메모를 한곳에서 찾아보세요.')}<form id="ws-library-filter" class="document-library-filter"><div class="field"><label for="library-search">문서 검색</label><input class="input" type="search" name="q" id="library-search" maxlength="100" value="${esc(options.q)}" placeholder="문서 제목 또는 내용"></div><div class="field"><label for="library-project">프로젝트</label><select id="library-project" name="project"><option value="">전체 프로젝트</option>${projects.map(p => `<option value="${p.id}" ${p.id === options.project ? 'selected' : ''}>${esc(p.title)} · ${p.documents.length}개</option>`).join('')}</select></div><div class="field"><label for="library-kind">문서 유형</label><select id="library-kind" name="kind"><option value="">전체 유형</option>${types.map(type => `<option ${type === options.kind ? 'selected' : ''}>${esc(type)}</option>`).join('')}</select></div><button class="btn primary" type="submit">찾아보기 ${icon('arrow')}</button></form><div class="library-result-heading"><span role="status">전체 ${total}개 중 ${items.length}개 문서</span><a class="text-link" href="#/workspace/documents">조건 초기화 ${icon('close')}</a></div>${selected ? `<div class="library-project-context"><a class="text-link" href="${href(selected, 'documents')}">${esc(selected.title)} 문서 ${icon('arrow')}</a><button class="btn secondary" data-ws-add-doc="${selected.id}">자료 메모 추가 ${icon('plus')}</button></div>` : ''}${items.length ? `<div class="library-document-grid">${items.map(({ project: p, document: d }) => `<article class="library-document-card"><button class="library-document-open" data-ws-doc="${d.id}" data-project="${p.id}" aria-label="${esc(d.title)} ${esc(d.version)} 미리보기"><span class="network-glyph">${icon('file')}</span><div><span class="library-document-meta">${esc(d.kind)} · ${esc(d.version)}</span><h2>${esc(d.title)}</h2></div>${icon('arrow')}<p>${esc((d.text || '').replaceAll('\n', ' ').slice(0, 180))}</p></button><a class="library-document-project" href="${href(p, 'documents')}">${icon('folder')}<span>${esc(p.title)}</span>${icon('up-right')}</a></article>`).join('')}</div>` : `<section class="ws-panel">${empty('조건에 맞는 문서가 없어요.', '검색어·프로젝트·유형을 바꾸거나 조건을 초기화해 보세요.', '<a class="btn secondary" href="#/workspace/documents">전체 문서 보기</a>')}</section>`}<p class="fine-print library-disclosure">검색은 문서 제목과 내용을 기준으로 합니다. 이전 검토본도 보관하며 실제 파일 대신 텍스트 미리보기와 저장을 체험합니다. 새로고침하면 작성 자료는 초기화됩니다.</p>`, 'documents');
+  }
   function inbox(kind, params) {
     const isMessages = kind === 'messages'; const id = params.get('project'); const selected = projects.find(p => p.id === id);
     document.title = `${isMessages ? '메시지' : '문서함'} — 헤이엔터씨`;
@@ -144,7 +153,8 @@ export function createWorkspace({ icon, esc, services, toast, showModal, closeMe
     else if (path === '/workspace/projects') projectList(params);
     else if (path === '/workspace/actions') actionsPage(params);
     else if (path === '/workspace/new') wizard();
-    else if (path === '/workspace/messages' || path === '/workspace/documents') inbox(path.split('/')[2], params);
+    else if (path === '/workspace/documents') documentLibrary(params);
+    else if (path === '/workspace/messages') inbox('messages', params);
     else {
       const [, , , id, tab = 'overview'] = path.split('/'); const p = projects.find(p => p.id === id);
       if (path.startsWith('/workspace/projects/') && p && TABS.some(([key]) => key === tab)) detail(p, tab);
@@ -203,7 +213,9 @@ export function createWorkspace({ icon, esc, services, toast, showModal, closeMe
   });
   document.addEventListener('submit', event => {
     const form = event.target; if (!form.id.startsWith('ws-')) return; event.preventDefault();
-    const data = new FormData(form); const p = projects.find(p => p.id === form.dataset.project);
+    const data = new FormData(form);
+    if (form.id === 'ws-library-filter') { const params = documentLibraryQuery(Object.fromEntries(data)); nav('/workspace/documents' + (params.size ? '?' + params : '')); return; }
+    const p = projects.find(p => p.id === form.dataset.project);
     if (form.classList.contains('production-review-form') && form.dataset.delivery) { const item = p.deliverables.find(item => item.id === form.dataset.delivery); const note = String(data.get('note')).trim(); const action = event.submitter?.value; if (action === 'revise' && !note) { toast('수정할 내용을 입력해 주세요.'); return; } item.status = action === 'revise' ? '수정 의견 있음' : '메모 확인 완료'; item.reviewNote = note; p.messages.push(message(`결과물 검토메모 ${item.title} · v${item.revision}.0 · ${item.status}${note ? '\n' + note : ''}`, 'me')); state.deliveryDrafts[item.id + ':' + item.revision] = ''; refresh(); toast('검토메모의 확인 상태를 체험 화면에 반영했어요.'); }
     if (form.id === 'ws-budget-review-form') { const snapshot = p.budgetSnapshots?.find(item => item.version === form.dataset.version); if (!snapshot) return; const note = String(data.get('note')).trim(); const action = event.submitter?.value; if (action === 'revise' && !note) { toast('수정할 내용을 입력해 주세요.'); return; } snapshot.reviewStatus = action === 'revise' ? '수정 의견 있음' : '구성 확인 완료'; snapshot.feedback = note; p.messages.push(message(`예산 검토본 ${snapshot.version} · ${snapshot.reviewStatus}${note ? '\n' + note : ''}`, 'me')); state.costReviewDrafts[p.id + ':' + snapshot.version] = ''; refresh(); toast('예산 구성의 검토 상태를 체험 화면에 반영했어요.'); }
     if (form.id === 'ws-project-form') { captureDraft(); if (!state.draft.title.trim() || !state.draft.region.trim()) { state.step = 0; refresh(); toast('프로젝트 이름과 지역을 입력해 주세요.'); return; } if (state.step < 2) { state.step++; refresh(); state.outlet.querySelector('h1').focus(); window.scrollTo(0, 0); } else saveDraft(true); }

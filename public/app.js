@@ -152,8 +152,8 @@ document.addEventListener('submit', event => {
     briefDraft.title = briefDraft.title.trim(); briefDraft.region = briefDraft.region.trim();
     if (!briefDraft.title || !briefDraft.region) { toast('프로젝트 이름과 지역을 공백 없이 입력해 주세요.'); return; }
     const d = briefDraft;
-    memo = `헤이엔터씨 상담 메모\n\n프로젝트: ${d.title}\n지역: ${d.region}\n의뢰 유형: ${d.type}\n총 예산(VAT 포함): ${d.budget}\n\n알리고 싶은 이야기\n${d.notes || '상담 시 함께 정리'}\n\n이 메모는 프로젝트용으로 작성되었으며 실제로 접수되지 않았습니다.`;
-    showModal('우리 프로젝트의 시작을 정리했어요.', `<p>메모를 프로젝트 초안으로 이어가거나 복사·파일로 저장해 두세요.</p><div class="brief-success"><strong>${esc(d.title)}</strong><p><b>지역과 의뢰 유형</b>${esc(d.region)} · ${esc(d.type)}</p><p><b>총 예산 · VAT 포함</b>${esc(d.budget)}</p><p><b>알리고 싶은 이야기</b>${esc(d.notes || '상담 시 함께 정리').replaceAll('\n', '<br>')}</p></div><p class="fine-print" style="margin-top:18px"> 메모는 현재 화면에만 유지됩니다.</p><div class="modal-actions"><button class="btn primary" data-action="workspace-draft">프로젝트 초안으로 이어가기 ${icon('arrow')}</button><button class="btn secondary" data-action="edit-memo">수정하기</button><button class="btn secondary" data-action="copy-memo">메모 복사</button><button class="btn secondary" data-action="download-memo">${icon('download')}파일로 저장</button></div>`, 'YOUR FIRST PROJECT NOTE');
+    memo = `헤이엔터씨 상담 메모\n\n프로젝트: ${d.title}\n지역: ${d.region}\n의뢰 유형: ${d.type}\n총 예산(VAT 포함): ${d.budget}\n\n알리고 싶은 이야기\n${d.notes || '상담 시 함께 정리'}`;
+    showModal('우리 프로젝트의 시작을 정리했어요.', `<p>메모를 프로젝트 초안으로 이어가거나 복사·파일로 저장해 두세요.</p><div class="brief-success"><strong>${esc(d.title)}</strong><p><b>지역과 의뢰 유형</b>${esc(d.region)} · ${esc(d.type)}</p><p><b>총 예산 · VAT 포함</b>${esc(d.budget)}</p><p><b>알리고 싶은 이야기</b>${esc(d.notes || '상담 시 함께 정리').replaceAll('\n', '<br>')}</p></div><div class="modal-actions"><button class="btn primary" data-action="workspace-draft">프로젝트 초안으로 이어가기 ${icon('arrow')}</button><button class="btn secondary" data-action="edit-memo">수정하기</button><button class="btn secondary" data-action="copy-memo">메모 복사</button><button class="btn secondary" data-action="download-memo">${icon('download')}파일로 저장</button></div>`, 'YOUR FIRST PROJECT NOTE');
   }
 });
 

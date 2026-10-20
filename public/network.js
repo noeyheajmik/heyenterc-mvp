@@ -2,12 +2,12 @@ import { REGIONS, regionSelection } from './regions.js';
 
 import { createCollaborator } from './collaborator.js';
 
-const PARTNER_FIELDS = [['video', '영상 제작', 'film'], ['press', '기사·보도', 'press'], ['design', '디자인', 'pen'], ['print', '인쇄·제작', 'print']];
+const PARTNER_FIELDS = [['video', '영상 제작', 'film'], ['press', '기사·보도', 'press'], ['print', '디자인', 'pen'], ['print', '인쇄·제작', 'print']];
 const ARTIST_FIELDS = [['singer', '가수·공연팀', 'mic'], ['creator', '인플루언서', 'spark'], ['mc', 'MC·진행자', 'person']];
 export const PROFILES = [
   { id: 'local-frame', kind: 'partners', name: '로컬 프레임 스튜디오', field: 'video', region: '전남', intro: '장소의 매력을 사람의 이야기로 담습니다.', description: '관광지의 풍경과 현장의 사람을 연결하는 영상 제작팀의 프로필 예시입니다. 인터뷰와 여행 동선을 중심으로 콘텐츠의 방향을 정리합니다.', outputs: ['관광·브랜드 소개 영상', '인터뷰·현장 스케치', 'SNS 숏폼'], checks: ['촬영 일수와 이동 동선', '영상 편수·길이와 수정 범위', '원본 제공·음원·초상권 조건'], samples: ['골목을 걷는 여행', '로컬 브랜드의 하루'] },
   { id: 'story-desk', kind: 'partners', name: '스토리 데스크', field: 'press', region: '전국', intro: '지역의 소식을 읽고 싶은 이야기로 정리합니다.', description: '지역 이슈와 브랜드 스토리를 인터뷰·보도자료로 정리하는 파트너 유형을 소개하는 프로필입니다. 작성과 배포의 범위를 구분해 검토합니다.', outputs: ['보도자료 기획·작성', '인물·브랜드 인터뷰', '배포 방향 정리'], checks: ['취재·작성·배포 범위', '자료 확인과 수정 일정', '게재 여부와 유료 노출 조건'], samples: ['지역 축제의 시작', '만드는 사람의 이야기'] },
-  { id: 'form-local', kind: 'partners', name: '폼 로컬 디자인', field: 'design', region: '서울·경기', intro: '지역의 개성을 일관된 시각 언어로 만듭니다.', description: '축제와 로컬 브랜드의 키비주얼을 온라인·오프라인으로 확장하는 디자인 파트너의 협업 범위입니다.', outputs: ['축제 키비주얼', '포스터·카드뉴스', '브랜드 그래픽'], checks: ['제작물 규격과 종류', '시안·수정 횟수', '폰트·이미지 사용권과 원본'], samples: ['우리 동네의 색', '계절을 담은 포스터'] },
+  { id: 'form-local', kind: 'partners', name: '폼 로컬 디자인', field: 'print', region: '서울·경기', intro: '지역의 개성을 일관된 시각 언어로 만듭니다.', description: '축제와 로컬 브랜드의 키비주얼을 온라인·오프라인으로 확장하는 디자인 파트너의 협업 범위입니다.', outputs: ['축제 키비주얼', '포스터·카드뉴스', '브랜드 그래픽'], checks: ['제작물 규격과 종류', '시안·수정 횟수', '폰트·이미지 사용권과 원본'], samples: ['우리 동네의 색', '계절을 담은 포스터'] },
   { id: 'paper-route', kind: 'partners', name: '페이퍼 루트', field: 'print', region: '전남', intro: '손에 닿는 홍보물까지 꼼꼼하게 완성합니다.', description: '관광 지도와 리플렛, 행사 인쇄물의 제작 조건을 정리하는 인쇄 파트너의 협업 범위입니다.', outputs: ['관광 지도·리플렛', '포스터·배너', '행사 안내물'], checks: ['수량·재질·규격과 후가공', '인쇄 전 교정 확인', '납기와 배송·설치 범위'], samples: ['한 장의 여행 지도', '축제를 안내하는 인쇄물'] },
   { id: 'on-stage', kind: 'artists', name: '온스테이지', field: 'singer', region: '전국', intro: '관객과 함께 호흡하는 어쿠스틱 무대.', description: '지역 축제와 소규모 공연에서 어쿠스틱 음악을 선보이는 공연팀의 협업 범위입니다.', outputs: ['어쿠스틱 라이브', '축제·브랜드 행사 공연', '콘텐츠 출연'], checks: ['공연 시간과 곡 구성', '무대·음향·리허설 조건', '이동·숙박과 촬영 활용'], samples: ['해 질 무렵의 라이브', '마을에서 만난 음악'] },
   { id: 'walk-note', kind: 'artists', name: '산책노트', field: 'creator', region: '전남', intro: '천천히 머물며 발견하는 지역의 장면들.', description: '로컬 여행과 생활 공간을 소개하는 크리에이터의 콘텐츠 방향을 소개하는 프로필입니다.', outputs: ['여행 브이로그', '로컬 체험 숏폼', '브랜드 협업 콘텐츠'], checks: ['게시 채널·편수와 유지 기간', '광고 표시와 사전 검토 범위', '2차 활용·광고 집행 조건'], samples: ['하루 더 머물고 싶은 곳', '동네의 작은 취향'] },

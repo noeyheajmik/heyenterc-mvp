@@ -12,8 +12,8 @@ const services = [
   { id: 'artist', name: '아티스트 섭외', icon: 'mic', short: '행사의 순간을 특별하게 만드는 만남.', description: '가수와 MC, 프로젝트에 맞는 출연진을 함께 검토합니다. 행사 목적과 관객, 지역과 일정을 바탕으로 적합한 역할을 구성합니다.', examples: ['가수·공연팀 섭외', 'MC·행사 진행자', '콘텐츠 출연진'], conditions: '출연료와 가능 일정, 공연 시간, 이동·숙박, 촬영과 활용 조건을 확인한 뒤 진행합니다.' },
   { id: 'creator', name: '인플루언서 협업', icon: 'spark', short: '사람의 시선으로 전하는 브랜드의 매력.', description: '제품과 지역의 이야기를 자신만의 시선으로 전할 크리에이터를 연결합니다. 채널의 특성과 콘텐츠 형식에 맞게 협업을 기획합니다.', examples: ['여행 크리에이터', '로컬 체험 콘텐츠', '브랜드 공동 캠페인'], conditions: '게시 채널과 편수, 게시 유지 기간, 2차 활용과 광고 집행 조건을 구분해 협의합니다.' },
   { id: 'press', name: '언론·보도 콘텐츠', icon: 'press', short: '브랜드와 지역의 새로운 소식을 더 멀리.', description: '알리고 싶은 지역 소식과 브랜드 이야기를 인터뷰와 보도자료로 정리합니다. 목적에 맞는 소재와 배포 방향을 함께 검토합니다.', examples: ['보도자료 기획·작성', '스토리 인터뷰', '배포와 홍보 방향 제안'], conditions: '취재·작성·배포·유료 노출 여부를 구분합니다. 기사 게재는 매체의 판단과 별도 조건에 따릅니다.' },
-  { id: 'design', name: '디자인', icon: 'pen', short: '브랜드의 개성이 한눈에 전해지도록.', description: '기업·로컬 브랜드와 축제의 고유한 매력을 시각 언어로 만듭니다. 하나의 콘셉트를 온라인과 오프라인의 다양한 제작물로 연결합니다.', examples: ['축제 키비주얼·브랜딩', '포스터·카드뉴스', '관광 콘텐츠 디자인'], conditions: '제작물의 종류와 수량, 시안·수정 횟수, 원본 제공과 사용권 범위를 정합니다.' },
-  { id: 'print', name: '인쇄·제작', icon: 'print', short: '손에 닿는 콘텐츠로 남기는 경험.', description: '브랜드와 지역의 이야기를 리플렛, 패키지와 행사 홍보물에 담습니다. 디자인부터 실제 제작 조건까지 하나의 흐름으로 검토합니다.', examples: ['리플렛·관광 지도', '포스터·현장 홍보물', '프로젝트 맞춤 제작물'], conditions: '규격, 재질, 수량, 후가공, 인쇄 전 확인, 납기와 배송을 함께 확인합니다.' }
+  { id: 'festival', name: '축제 운영', icon: 'festival', short: '기획한 순간을 완성도 있는 현장으로.', description: '지역 축제와 브랜드 행사의 기획부터 현장 운영까지 연결합니다. 프로그램과 동선, 출연진과 운영 인력을 함께 구성해 행사의 흐름을 만듭니다.', examples: ['축제·행사 프로그램 기획', '무대·현장 운영', '운영 인력·동선 구성'], conditions: '행사 규모와 장소, 운영 기간, 인력과 장비, 안전 관리 역할과 책임 범위를 함께 확인합니다.' },
+  { id: 'print', name: '인쇄·디자인', icon: 'print', short: '브랜드의 인상을 디자인하고 제작합니다.', description: '브랜드와 축제의 키비주얼부터 포스터·SNS 콘텐츠·리플렛까지. 시각 디자인과 인쇄 제작을 하나의 흐름으로 구성합니다.', examples: ['키비주얼·브랜딩 디자인', '포스터·SNS 콘텐츠', '리플렛·인쇄 홍보물'], conditions: '시안·수정 횟수와 원본 사용권, 제작 규격·재질·수량, 후가공과 납기·배송을 함께 확인합니다.' }
 ];
 
 const references = [
@@ -121,11 +121,11 @@ document.addEventListener('click', event => {
     try { localStorage.setItem('hey-home-saved', JSON.stringify(saved)); } catch { /* Session UI still works. */ }
     renderReferences(); $(`[data-save="${id}"]`)?.focus(); toast(exists ? '저장을 해제했어요.' : '관심 있는 사례로 이 브라우저에 저장했어요.'); return;
   }
-  if (el.dataset.serviceBrief) { const s = services.find(s => s.id === el.dataset.serviceBrief); modal.close(); explorer.navigate(planningPath({services:[s.id],goal:s.id==='artist'?'축제·행사':'브랜드·콘텐츠'})); return; }
+  if (el.dataset.serviceBrief) { const s = services.find(s => s.id === el.dataset.serviceBrief); modal.close(); explorer.navigate(planningPath({services:[s.id],goal:['artist','festival'].includes(s.id)?'축제·행사':'브랜드·콘텐츠'})); return; }
   if (el.dataset.referenceBrief) { const r = references.find(r => r.id === el.dataset.referenceBrief); modal.close(); explorer.navigate(planningPath({source:r.title.replace('<br>',' '),goal:r.category.includes('brand')?'브랜드·콘텐츠':'관광·지역 홍보',services:r.id==='music'?['artist']:['video','creator']})); return; }
   if (el.dataset.direction !== undefined) { const d = directions[el.dataset.goal][Number(el.dataset.direction)]; startBrief({ budget: el.dataset.budget, notes: `홍보 목표: ${el.dataset.goal}\n관심 있는 구성: ${d[0]}` }); return; }
   const action = el.dataset.action;
-  if (el.dataset.businessPreset) { explorer.navigate(planningPath({client:el.dataset.businessPreset,goal:el.dataset.businessPreset==='institution'?'관광·지역 홍보':'브랜드·콘텐츠',services:el.dataset.businessPreset==='institution'?['video','creator']:['video','design']})); return; }
+  if (el.dataset.businessPreset) { explorer.navigate(planningPath({client:el.dataset.businessPreset,goal:el.dataset.businessPreset==='institution'?'관광·지역 홍보':'브랜드·콘텐츠',services:el.dataset.businessPreset==='institution'?['video','creator']:['video','print']})); return; }
   if (action === 'start-project') { modal.close(); explorer.navigate('/budget'); return; }
   if (action === 'close-modal') { modal.close(); return; }
   if (action === 'brief') { startBrief(); return; }

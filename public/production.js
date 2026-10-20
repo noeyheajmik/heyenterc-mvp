@@ -2,7 +2,7 @@ import { createCoordination } from './coordination.js';
 
 import { createBudgetEditor } from './budget.js';
 
-export function createProduction({ projects, icon, esc, toast, message, doc, shell, log, hub, profiles }) {
+export function createProduction({ projects, icon, esc, toast, message, doc, shell, log, hub, profiles, reports }) {
   const state = { project: null, tab: '', taskDrafts: {}, peopleDrafts: {}, deliveryDrafts: {} };
   const budgetEditor = createBudgetEditor({ projects, icon, esc, toast, message, doc, layout, log });
   const coordination = createCoordination({ hub, profiles, projects, icon, esc, toast, message, log, refresh });
@@ -15,9 +15,9 @@ export function createProduction({ projects, icon, esc, toast, message, doc, she
   const select = (id, label, name, values, value) => `<div class="field"><label for="${id}">${label}</label><select id="${id}" name="${name}">${values.map(v => `<option ${v === value ? 'selected' : ''}>${v}</option>`).join('')}</select></div>`;
   const empty = text => `<p class="ws-muted production-empty">${text}</p>`;
   function ensure(p) { p.tasks.forEach(t => { t.id ||= crypto.randomUUID(); }); p.participants ||= []; p.deliverables ||= []; }
-  function tabs(p, active) { return `<nav class="production-tabs" aria-label="운영 프로젝트 메뉴">${[['', '브리프·제안'], ['schedule', '일정·결과물'], ['people', '참여자'], ['budget', '예산']].map(([id, title]) => `<a href="${link(p, id)}" ${id === active ? 'aria-current="page"' : ''}>${title}</a>`).join('')}</nav>`; }
+  function tabs(p, active) { return `<div class="production-toolbar"><nav class="production-tabs" aria-label="운영 프로젝트 메뉴">${[['', '브리프·제안'], ['schedule', '일정·결과물'], ['people', '참여자'], ['budget', '예산']].map(([id, title]) => `<a href="${link(p, id)}" ${id === active ? 'aria-current="page"' : ''}>${title}</a>`).join('')}</nav><a class="btn secondary report-open-link" href="${link(p, 'report')}" ${active === 'report' ? 'aria-current="page"' : ''}>진행 요약 ${icon('file')}</a></div>`; }
   function layout(p, tab, body) {
-    shell(`<a class="text-link collab-back" href="#/staff/projects">전체 프로젝트 ${icon('arrow')}</a><div class="ws-heading"><div><span class="eyebrow">KEEP EVERY DETAIL CONNECTED</span><h1 tabindex="-1">${esc(p.title)}</h1><p>${esc(p.region)} · ${esc(p.goal)}</p></div><a class="btn secondary" href="#/workspace/projects/${p.id}/${tab === 'people' ? 'people' : tab === 'budget' ? 'budget' : 'schedule'}">의뢰자 화면 확인 ${icon('up-right')}</a></div>${tabs(p, tab)}${body}`, 'projects');
+    shell(`<a class="text-link collab-back" href="#/staff/projects">전체 프로젝트 ${icon('arrow')}</a><div class="ws-heading"><div><span class="eyebrow">KEEP EVERY DETAIL CONNECTED</span><h1 tabindex="-1">${esc(p.title)}</h1><p>${esc(p.region)} · ${esc(p.goal)}</p></div><a class="btn secondary" href="#/workspace/projects/${p.id}/${tab === 'people' ? 'people' : tab === 'budget' ? 'budget' : tab === 'report' ? 'summary' : 'schedule'}">의뢰자 화면 확인 ${icon('up-right')}</a></div>${tabs(p, tab)}${body}`, 'projects');
   }
   function schedule(p) {
     const d = state.taskDrafts[p.id] ||= blankTask();
@@ -28,7 +28,7 @@ export function createProduction({ projects, icon, esc, toast, message, doc, she
     const d = state.peopleDrafts[p.id] ||= blankPerson();
     layout(p, 'people', `<div class="coordination-shortcut"><p>함께할 후보의 역할과 가능 조건을 먼저 확인해 보세요.</p><button class="btn secondary" type="button" data-coordination-focus>협업 요청 구성하기 ${icon('arrow')}</button></div><div class="collab-detail-grid"><section class="ws-panel"><span class="eyebrow">THE PEOPLE BEHIND THE STORY</span><h2>프로젝트 참여자</h2><div class="production-owner">${icon('person')}<div><strong>${esc(p.manager || '담당 매니저 미배정')}</strong><p>헤이엔터씨 · 프로젝트 운영</p></div></div>${p.participants.length ? `<div class="production-rows">${p.participants.map(person => `<article><span class="network-glyph">${icon(person.kind === '아티스트' ? 'mic' : 'person')}</span><div><h3>${esc(person.name)}</h3><p>${person.kind} · ${esc(person.role)}</p><span class="collab-status">${person.status}</span></div><button class="production-edit" data-production-person="${person.id}" aria-label="${esc(person.name)} 수정">수정 ${icon('pen')}</button></article>`).join('')}</div>` : empty('제작 파트너나 아티스트를 추가하고 맡은 역할을 정리해 보세요.')}<p class="fine-print collab-form-note">입력한 이름과 상태는 가상 참여자 정보입니다. 실제 섭외·계약이나 계정 초대는 이루어지지 않습니다.</p></section><section class="ws-panel"><span class="eyebrow">THE RIGHT ROLE, CLEARLY</span><h2>${d.id ? '참여자 정보 수정' : '참여자 추가'}</h2><form id="production-person-form" data-project="${p.id}">${field('production-person-name', '이름·팀명', 'name', d.name, true)}${select('production-person-kind', '참여 유형', 'kind', ['제작 파트너', '아티스트'], d.kind)}${field('production-person-role', '담당 역할', 'role', d.role, true)}${select('production-person-status', '참여 상태', 'status', ['후보 검토', '조건 협의', '참여 예정', '참여 중', '참여 종료'], d.status)}<button class="btn primary full-width" type="submit">${d.id ? '참여자 수정 반영' : '참여자 추가'} · 체험 ${icon('check')}</button>${d.id ? '<button class="text-link production-cancel" type="button" data-production-reset="person">수정 취소</button>' : ''}</form></section></div>${coordination.render(p)}`);
   }
-  function render(id, tab) { const p = projects.find(p => p.id === id); if (!p) return false; ensure(p); state.project = p; state.tab = tab; if (tab === 'schedule') schedule(p); else if (tab === 'budget') budgetEditor.render(p); else people(p); return true; }
+  function render(id, tab) { const p = projects.find(p => p.id === id); if (!p) return false; ensure(p); state.project = p; state.tab = tab; if (tab === 'schedule') schedule(p); else if (tab === 'budget') budgetEditor.render(p); else if (tab === 'report') layout(p, tab, reports.render(p, true)); else people(p); return true; }
   function refresh() { render(state.project.id, state.tab); }
   function capture(event) {
     const form = event.target.closest('form'); if (!form?.id.startsWith('production-')) return;

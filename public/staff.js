@@ -1,9 +1,9 @@
 import { createProduction } from './production.js';
 
 const MANAGERS = ['콘텐츠 매니저 · 가상 담당자', '행사 매니저 · 가상 담당자', '브랜드 매니저 · 가상 담당자'];
-export function createStaff({ projects, icon, esc, toast, message, doc, hub, profiles }) {
+export function createStaff({ projects, icon, esc, toast, message, doc, hub, profiles, reports }) {
   const state = { outlet: null, path: '', params: new URLSearchParams(), drafts: {}, assignments: {}, notes: {}, log: [] };
-  const production = createProduction({ projects, icon, esc, toast, message, doc, shell, hub, profiles, log: state.log });
+  const production = createProduction({ projects, icon, esc, toast, message, doc, shell, hub, profiles, reports, log: state.log });
   const head = (kicker, title, text, action = '') => `<div class="ws-heading"><div><span class="eyebrow">${kicker}</span><h1 tabindex="-1">${title}</h1><p>${text}</p></div>${action}</div>`;
   const badge = text => `<span class="collab-status">${esc(text)}</span>`;
   const empty = text => `<div class="collab-empty">${icon('folder')}<h2>${text}</h2><p>프로젝트 목록에서 필요한 항목을 확인해 주세요.</p></div>`;
@@ -36,7 +36,7 @@ export function createStaff({ projects, icon, esc, toast, message, doc, hub, pro
     state.outlet = outlet; state.path = path; state.params = params;
     if (path === '/staff') home();
     else if (path === '/staff/projects' || path === '/staff/proposals') list(path.endsWith('proposals'));
-    else if (/^\/staff\/projects\/[^/]+\/(schedule|people|budget)$/.test(path)) { const parts = path.split('/'); if (!production.render(parts[3], parts[4])) shell(empty('프로젝트를 찾을 수 없어요.'), 'projects'); }
+    else if (/^\/staff\/projects\/[^/]+\/(schedule|people|budget|report)$/.test(path)) { const parts = path.split('/'); if (!production.render(parts[3], parts[4])) shell(empty('프로젝트를 찾을 수 없어요.'), 'projects'); }
     else if (/^\/staff\/projects\/[^/]+$/.test(path)) detail(path.split('/')[3]);
     else shell(empty('화면을 찾을 수 없어요.'), 'projects');
     return true;

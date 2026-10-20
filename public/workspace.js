@@ -1,10 +1,12 @@
+import { createReports } from './reports.js';
+
 import { clientBudget } from './budget.js';
 
 import { createStaff } from './staff.js';
 
 const BUDGETS = ['미정', '500만원 미만', '500만~1,000만원', '1,000만~3,000만원', '3,000만~5,000만원', '5,000만원 이상'];
 const GOALS = ['관광·지역 홍보', '축제·행사', '브랜드·콘텐츠'];
-const TABS = [['overview', '개요'], ['brief', '브리프'], ['proposals', '제안서'], ['schedule', '일정·결과물'], ['budget', '예산'], ['people', '참여자'], ['messages', '메시지'], ['documents', '문서']];
+const TABS = [['overview', '개요'], ['summary', '진행 요약'], ['brief', '브리프'], ['proposals', '제안서'], ['schedule', '일정·결과물'], ['budget', '예산'], ['people', '참여자'], ['messages', '메시지'], ['documents', '문서']];
 
 export function createWorkspace({ icon, esc, services, toast, showModal, closeMenus, hub, profiles }) {
   const message = (text, who = 'manager') => ({ id: crypto.randomUUID(), text, who, at: who === 'manager' ? '시나리오 예시' : '이번 체험' });
@@ -14,7 +16,8 @@ export function createWorkspace({ icon, esc, services, toast, showModal, closeMe
     { id: 'festival', title: '가을 로컬 페스티벌 홍보', region: '지역 협의 · 샘플', goal: GOALS[1], budget: BUDGETS[4], date: '', status: '제작 진행', services: ['artist', 'design', 'video'], notes: '공연과 로컬 브랜드가 어우러지는 축제의 사전 홍보물과 현장 기록을 준비합니다.', manager: '행사 매니저 · 가상 담당자', tasks: [{ title: '홍보 콘셉트 정리', stage: '완료', due: '1단계' }, { title: '키비주얼 시안 검토', stage: '검토 중', due: '2단계' }, { title: '출연진·현장 조건 확인', stage: '예정', due: '확인 후' }], messages: [message('키비주얼 시안을 검토하는 단계의 가상 프로젝트입니다. 일정·결과물 탭에서 검토 의견을 남겨보세요.')], documents: [doc('축제 홍보 기획 메모', '기획', '축제의 주제와 관객을 먼저 정리합니다.\n공연·진행·홍보물·기록 영상의 업무 범위를 나눠 검토합니다.\n이 내용은 가상 프로젝트의 구성 예시입니다.')], proposal: true, reviewed: true, reviewedVersions: ['v1.0'], feedback: '', version: 'v1.0', latestVersion: 'v1.0' },
     { id: 'local-brand', title: '로컬 브랜드 스토리 콘텐츠', region: '지역 미정', goal: GOALS[2], budget: BUDGETS[0], date: '', status: '초안', services: ['press', 'video'], notes: '브랜드의 시작과 만드는 사람의 이야기를 콘텐츠로 정리하고 싶어요.', manager: '', tasks: [], messages: [], documents: [], proposal: false, reviewed: false, feedback: '', version: 'v1.0' }
   ];
-  const staff = createStaff({ projects, icon, esc, toast, message, doc, hub, profiles });
+  const reports = createReports({ projects, icon, esc, toast, doc, message });
+  const staff = createStaff({ reports, projects, icon, esc, toast, message, doc, hub, profiles });
   const state = { role: '', next: '/workspace', outlet: null, path: '', params: null, q: '', filter: '전체', draft: null, step: 0, context: false, messageDrafts: {}, feedbackDrafts: {}, deliveryDrafts: {}, costReviewDrafts: {} };
   const newDraft = () => ({ id: '', title: '', region: '', goal: GOALS[0], budget: BUDGETS[0], date: '', services: [], notes: '' });
   const nav = path => { closeMenus(); document.querySelector('#modal')?.close(); if (location.hash === `#${path}`) render(state.outlet, path.split('?')[0], new URLSearchParams(path.split('?')[1])); else location.hash = path; };
@@ -84,7 +87,8 @@ export function createWorkspace({ icon, esc, services, toast, showModal, closeMe
   function detail(p, tab) {
     document.title = `${p.title} — 헤이엔터씨`;
     let content;
-    if (tab === 'brief') content = `<section class="ws-panel"><div class="ws-panel-heading"><h2>프로젝트 브리프</h2>${p.status === '초안' ? `<button class="btn secondary small" data-ws-edit="${p.id}">초안 수정 ${icon('pen')}</button>` : ''}</div>${briefSummary(p)}</section>`;
+    if (tab === 'summary') content = reports.render(p);
+    else if (tab === 'brief') content = `<section class="ws-panel"><div class="ws-panel-heading"><h2>프로젝트 브리프</h2>${p.status === '초안' ? `<button class="btn secondary small" data-ws-edit="${p.id}">초안 수정 ${icon('pen')}</button>` : ''}</div>${briefSummary(p)}</section>`;
     else if (tab === 'proposals') content = proposal(p);
     else if (tab === 'messages') content = messages(p);
     else if (tab === 'documents') content = documents(p);

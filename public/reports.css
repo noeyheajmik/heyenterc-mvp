@@ -43,3 +43,5 @@
   .report-check > svg { grid-column: 3; grid-row: 1; }
   .report-facts dd { font-size: 13px; }
 }
+.production-toolbar .report-open-link[aria-current=page],
+.production-toolbar .report-open-link[aria-current=page]:hover { background: #173e2d; color: white; border-color: #173e2d; }

@@ -168,6 +168,8 @@ Linktree 공개 사이트를 참고해 캡슐형 탐색, 큰 굵은 제목, 둥�
 
 메인의 브랜드·기업, 로컬 브랜드·개인, 지자체별 이용 목적과 시작 경로를 보강했습니다. 기업용 시작 버튼은 상담 메모의 의뢰 유형을 기업·브랜드로 지정합니다. 블루밍비데의 모델 섭외·브랜드 영상 사례를 추가했습니다. 회사소개는 `#/about`에서 회사 방향, 연혁, 팀, 문의 경로를 안내하며, 기존 [회사소개](https://heyenterc.com/about)와 [서비스 소개](https://heyenterc.com/service)의 공개 정보를 2026-10-20 확인해 반영했습니다.
 
-메인의 고객 로고는 원본 비율을 유지한 공식 이미지입니다. 원본 위치: [고흥군](https://www.goheung.go.kr/home/www/images/main/icon_goheung_logo.png?1), [제주시](https://www.jejusi.go.kr/images/jejusi/comm/logo.png), [블랙야크](https://global.blackyak.com/), [모두투어](https://www.modetour.com/images/defaultLogo.png), [블루밍비데](https://ncmshop.co.kr/img/logo/logo.png). 이미지 파일은 `public/assets/clients/`에 보관합니다. 서체 라이선스와 기존 사진 출처 기록은 저장소에 유지하며, 화면의 개발 단계 안내와 출처 모달은 제거했습니다.
+메인의 고객 로고는 원본 비율을 유지한 공식 이미지입니다. 원본 위치: [고흥군](https://www.goheung.go.kr/home/www/images/main/icon_goheung_logo.png?1), [제주시](https://www.jejusi.go.kr/images/jejusi/comm/logo.png), [블랙야크](https://global.blackyak.com/), [모두투어](https://www.modetour.com/images/defaultLogo.png), [블루밍비데](https://bloomingbidet.co.kr/assets/img/footer/logo.png). 이미지 파일은 `public/assets/clients/`에 보관합니다. 서체 라이선스와 기존 사진 출처 기록은 저장소에 유지하며, 화면의 개발 단계 안내와 출처 모달은 제거했습니다.
 
 이번 변경은 화면·콘텐츠 업데이트입니다. DB·인증·외부 요청 전송·영구 저장은 추가하지 않았으며 기존 메모리 동작을 유지합니다. 배포 대상은 GitHub Pages이며 heyenterc.com의 도메인 연결 설정은 변경하지 않았습니다.
+
+고객사 로고는 원본의 투명도·비율을 유지한 채 CSS 필터로 단일 그레이(`#737373`)로 표시합니다. 블루밍은 제공받은 공식 푸터 로고(`blooming-official.png`)로 교체했으며 원본 너비 155px 이내로 표시합니다.

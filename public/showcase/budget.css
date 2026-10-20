@@ -1,0 +1,49 @@
+.budget-summary { display: grid; gap: 0; border: 1px solid #dde5d6; background: #f3f6ef; padding: 8px 24px; border-radius: 20px; margin: 24px 0; }
+.budget-summary > div { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px 0; border-bottom: 1px solid #dde5d6; }
+.budget-summary > div:last-child { border-bottom: 0; }
+.budget-summary span { font-size: 12px; line-height: 1.8; color: #657163; }
+.budget-summary strong { font-size: 19px; line-height: 1.5; font-weight: 700; text-align: right; overflow-wrap: anywhere; }
+.budget-summary > div:first-child strong { font-size: 26px; letter-spacing: -.035em; }
+.budget-summary .over-budget { color: #8c452e; }
+.budget-summary .over-budget span { color: #8c452e; }
+.budget-alert { font-size: 13px; color: #8c452e; background: #faf0e9; padding: 16px 20px; border-radius: 14px; line-height: 1.85; margin: 0 0 24px; }
+.budget-conditions { border-left: 2px solid #b5c2aa; padding: 0 0 0 18px; margin: 24px 0; }
+.budget-conditions > strong { font-size: 12px; }
+.budget-conditions > p { font-size: 13px; line-height: 1.85; color: #657163; margin: 10px 0 0; overflow-wrap: anywhere; }
+.budget-section-heading { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin: 32px 0 12px; }
+.budget-section-heading h3, .budget-section-title { font-size: 16px; margin: 0; }
+.budget-section-heading > span { font-size: 12px; color: #657163; }
+.budget-section-title { margin-top: 30px; }
+.budget-item { display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; padding: 24px 0; border-top: 1px solid #e0e6da; }
+.budget-item > div:first-child { flex: 1; min-width: 0; }
+.budget-category { font-size: 11px; color: #657163; }
+.budget-item h3 { font-size: 15px; line-height: 1.7; margin: 8px 0; overflow-wrap: anywhere; }
+.budget-item p { font-size: 12px; line-height: 1.85; color: #657163; margin: 0; }
+.budget-item > strong { font-size: 16px; margin-top: 28px; line-height: 1.8; overflow-wrap: anywhere; }
+.budget-item-actions { display: flex; align-items: center; justify-content: flex-end; gap: 14px; width: 100%; }
+.budget-remove { font-size: 12px; min-height: 44px; padding: 10px 8px; color: #657163; }
+.budget-version { display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0; }
+.budget-published-total { font-size: 26px; font-weight: 700; margin: 24px 0; letter-spacing: -.035em; }
+.budget-published-total small { font-size: 12px; font-weight: 400; color: #657163; letter-spacing: 0; margin-left: 8px; }
+.budget-empty { padding: 28px 0; }
+.budget-empty > .network-glyph { margin-bottom: 24px; }
+.budget-empty h3 { font-size: 18px; margin-bottom: 14px; }
+.budget-empty p { font-size: 13px; line-height: 1.85; color: #657163; margin-bottom: 0; }
+.budget-disclosure { font-size: 11px; line-height: 1.85; color: #657163; margin: 22px 0 0; }
+.budget-undo { display: flex; align-items: center; justify-content: space-between; gap: 20px; background: #edf2e8; border-radius: 14px; padding: 16px 18px; margin: 0 0 24px; font-size: 12px; line-height: 1.8; }
+.budget-undo > span { min-width: 0; overflow-wrap: anywhere; }
+.budget-undo .text-link { font-size: 12px; flex-shrink: 0; min-height: 44px; }
+.budget-line-preview { background: #f3f6ef; padding: 16px; border-radius: 12px; font-size: 13px; color: #536158; margin-bottom: 24px; }
+.production-history .budget-item:last-child { padding-bottom: 0; }
+@media (max-width: 700px) {
+  .budget-summary { padding: 4px 20px; border-radius: 16px; }
+  .budget-summary > div { align-items: flex-start; flex-direction: column; gap: 10px; padding: 18px 0; }
+  .budget-summary strong { text-align: left; font-size: 18px; }
+  .budget-summary > div:first-child strong { font-size: 25px; }
+  .budget-item { gap: 12px; }
+  .budget-item > div:first-child { flex-basis: 100%; }
+  .budget-item > strong { margin-top: 0; font-size: 16px; }
+  .budget-item-actions { justify-content: flex-start; }
+  .budget-undo { flex-wrap: wrap; gap: 8px; }
+  .staff-shell #budget-line-form .form-row { grid-template-columns: minmax(0, 1fr); gap: 0; }
+}

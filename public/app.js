@@ -1,3 +1,4 @@
+import { planningPath } from './mvp.js';
 import { createWorkspace } from './workspace.js';
 import { createExplorer } from './explore.js';
 import { createNetwork, PROFILES } from './network.js';
@@ -120,19 +121,20 @@ document.addEventListener('click', event => {
     try { localStorage.setItem('hey-home-saved', JSON.stringify(saved)); } catch { /* Session UI still works. */ }
     renderReferences(); $(`[data-save="${id}"]`)?.focus(); toast(exists ? '저장을 해제했어요.' : '관심 있는 사례로 이 브라우저에 저장했어요.'); return;
   }
-  if (el.dataset.serviceBrief) { const s = services.find(s => s.id === el.dataset.serviceBrief); startBrief({ notes: `${s.name} 분야의 홍보를 생각하고 있습니다.` }); return; }
-  if (el.dataset.referenceBrief) { const r = references.find(r => r.id === el.dataset.referenceBrief); startBrief({ notes: `참고 사례: ${r.title.replace('<br>', ' ')}\n이런 방향의 콘텐츠를 만들고 싶습니다.` }); return; }
+  if (el.dataset.serviceBrief) { const s = services.find(s => s.id === el.dataset.serviceBrief); modal.close(); explorer.navigate(planningPath({services:[s.id],goal:s.id==='artist'?'축제·행사':'브랜드·콘텐츠'})); return; }
+  if (el.dataset.referenceBrief) { const r = references.find(r => r.id === el.dataset.referenceBrief); modal.close(); explorer.navigate(planningPath({source:r.title.replace('<br>',' '),goal:r.category.includes('brand')?'브랜드·콘텐츠':'관광·지역 홍보',services:r.id==='music'?['artist']:['video','creator']})); return; }
   if (el.dataset.direction !== undefined) { const d = directions[el.dataset.goal][Number(el.dataset.direction)]; startBrief({ budget: el.dataset.budget, notes: `홍보 목표: ${el.dataset.goal}\n관심 있는 구성: ${d[0]}` }); return; }
   const action = el.dataset.action;
-  if (el.dataset.businessPreset) { const presets = { company: { type: '기업·브랜드', title: '브랜드 홍보 프로젝트', notes: '목표 고객과 브랜드 메시지를 중심으로 영상·모델·크리에이터 협업을 검토하고 싶습니다.' }, personal: { type: '로컬 브랜드·사업자', title: '나의 브랜드 콘텐츠', notes: '매장·제품·창작 활동을 소개할 콘텐츠와 필요한 협업 범위를 정리하고 싶습니다.' }, institution: { type: '기관·지자체', title: '지역 홍보 프로젝트', notes: '관광·축제·지역의 매력을 알릴 콘텐츠와 참여자를 검토하고 싶습니다.' } }; startBrief(presets[el.dataset.businessPreset]); return; }
+  if (el.dataset.businessPreset) { explorer.navigate(planningPath({client:el.dataset.businessPreset,goal:el.dataset.businessPreset==='institution'?'관광·지역 홍보':'브랜드·콘텐츠',services:el.dataset.businessPreset==='institution'?['video','creator']:['video','design']})); return; }
+  if (action === 'start-project') { modal.close(); explorer.navigate('/budget'); return; }
   if (action === 'close-modal') { modal.close(); return; }
   if (action === 'brief') { startBrief(); return; }
   if (action === 'partners' || action === 'artists') { explorer.navigate('/' + action); return; }
   if (action === 'join') { explorer.navigate('/join'); return; }
   if (action === 'partner-memo') { startBrief({ type: '파트너 참여', notes: '전문 분야와 포트폴리오, 협업 조건을 정리하고 싶습니다.' }); return; }
   if (action === 'account') { workspace.enter(); return; }
-  if (action === 'workspace-draft') { workspace.startProject(briefDraft); return; }
-  if (action === 'process') { showModal('기획부터 실행까지, 함께 정리합니다.', `<div class="option-list"><div class="option-card"><span>01 · 프로젝트 브리프</span><h3>목표와 조건을 먼저 확인해요</h3><p>홍보 목적, 예산, 일정과 참고 사례를 바탕으로 필요한 범위를 구체화합니다.</p></div><div class="option-card"><span>02 · 맞춤 제안</span><h3>콘텐츠와 사람을 함께 구성해요</h3><p>제작 범위와 참여자, 비용과 일정을 제안하고 의견을 주고받습니다.</p></div><div class="option-card"><span>03 · 제작과 결과물</span><h3>진행 과정과 피드백을 연결해요</h3><p>문서와 작업물을 정리하고 합의한 범위에 맞춰 결과물을 검토합니다.</p></div></div><div class="modal-actions"><button class="btn primary" data-action="brief">우리 프로젝트 메모하기 ${icon('arrow')}</button></div>`, 'HOW WE WORK'); return; }
+  if (action === 'workspace-draft') { modal.close(); explorer.navigate(planningPath(briefDraft)); return; }
+  if (action === 'process') { showModal('기획부터 실행까지, 함께 정리합니다.', `<div class="option-list"><div class="option-card"><span>01 · 프로젝트 브리프</span><h3>목표와 조건을 먼저 확인해요</h3><p>홍보 목적, 예산, 일정과 참고 사례를 바탕으로 필요한 범위를 구체화합니다.</p></div><div class="option-card"><span>02 · 맞춤 제안</span><h3>콘텐츠와 사람을 함께 구성해요</h3><p>제작 범위와 참여자, 비용과 일정을 제안하고 의견을 주고받습니다.</p></div><div class="option-card"><span>03 · 제작과 결과물</span><h3>진행 과정과 피드백을 연결해요</h3><p>문서와 작업물을 정리하고 합의한 범위에 맞춰 결과물을 검토합니다.</p></div></div><div class="modal-actions"><button class="btn primary" data-action="start-project">홍보 구성 찾기 ${icon('arrow')}</button></div>`, 'HOW WE WORK'); return; }
   if (action === 'download-memo') { downloadMemo(); return; }
   if (action === 'edit-memo') { startBrief(); return; }
   if (action === 'copy-memo') { if (!navigator.clipboard) { toast('복사할 수 없는 환경입니다. 메모를 파일로 저장해 주세요.'); return; } navigator.clipboard.writeText(memo).then(() => toast('상담 메모를 복사했어요.')).catch(() => toast('복사할 수 없는 환경입니다. 메모를 파일로 저장해 주세요.')); return; }
@@ -153,7 +155,7 @@ document.addEventListener('submit', event => {
     if (!briefDraft.title || !briefDraft.region) { toast('프로젝트 이름과 지역을 공백 없이 입력해 주세요.'); return; }
     const d = briefDraft;
     memo = `헤이엔터씨 상담 메모\n\n프로젝트: ${d.title}\n지역: ${d.region}\n의뢰 유형: ${d.type}\n총 예산(VAT 포함): ${d.budget}\n\n알리고 싶은 이야기\n${d.notes || '상담 시 함께 정리'}`;
-    showModal('우리 프로젝트의 시작을 정리했어요.', `<p>메모를 프로젝트 초안으로 이어가거나 복사·파일로 저장해 두세요.</p><div class="brief-success"><strong>${esc(d.title)}</strong><p><b>지역과 의뢰 유형</b>${esc(d.region)} · ${esc(d.type)}</p><p><b>총 예산 · VAT 포함</b>${esc(d.budget)}</p><p><b>알리고 싶은 이야기</b>${esc(d.notes || '상담 시 함께 정리').replaceAll('\n', '<br>')}</p></div><div class="modal-actions"><button class="btn primary" data-action="workspace-draft">프로젝트 초안으로 이어가기 ${icon('arrow')}</button><button class="btn secondary" data-action="edit-memo">수정하기</button><button class="btn secondary" data-action="copy-memo">메모 복사</button><button class="btn secondary" data-action="download-memo">${icon('download')}파일로 저장</button></div>`, 'YOUR FIRST PROJECT NOTE');
+    showModal('우리 프로젝트의 시작을 정리했어요.', `<p>문의 내용을 확인하고 복사·파일로 저장해 두세요.</p><div class="brief-success"><strong>${esc(d.title)}</strong><p><b>지역과 의뢰 유형</b>${esc(d.region)} · ${esc(d.type)}</p><p><b>총 예산 · VAT 포함</b>${esc(d.budget)}</p><p><b>알리고 싶은 이야기</b>${esc(d.notes || '상담 시 함께 정리').replaceAll('\n', '<br>')}</p></div><div class="modal-actions"><button class="btn primary" data-action="workspace-draft">홍보 구성 찾기로 ${icon('arrow')}</button><button class="btn secondary" data-action="edit-memo">수정하기</button><button class="btn secondary" data-action="copy-memo">메모 복사</button><button class="btn secondary" data-action="download-memo">${icon('download')}파일로 저장</button></div>`, 'YOUR FIRST PROJECT NOTE');
   }
 });
 

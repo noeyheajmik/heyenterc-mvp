@@ -1,0 +1,12 @@
+.settings-layout { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr); gap: 28px; align-items: start; }
+.settings-required { font-size: 12px; line-height: 1.85; color: #657163; margin-bottom: 28px; }
+.settings-layout .ws-panel h2 { font-size: 24px; }
+.settings-save-state { background: #f1f5ec; padding: 16px 18px; border-radius: 12px; color: #536158; font-size: 12px; line-height: 1.8; margin-top: 28px; }
+.settings-form-actions { display: flex; align-items: center; justify-content: space-between; gap: 16px; border-top: 1px solid #e0e6da; padding-top: 24px; margin-top: 28px; }
+.settings-profile-name { margin-top: 24px; overflow-wrap: anywhere; }
+.settings-note { border-radius: 24px; background: #eaf0e4; padding: 30px; }
+.settings-note h2 { font-size: 27px; letter-spacing: -.04em; line-height: 1.35; margin: 20px 0 18px; }
+.settings-note p { font-size: 14px; color: #657163; line-height: 1.85; }
+.settings-note .fine-print { font-size: 12px; border-top: 1px solid #d6e0ce; margin: 24px 0 0; padding-top: 20px; }
+@media (max-width: 1050px) { .settings-layout { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 600px) { .settings-form-actions { flex-direction: column-reverse; align-items: stretch; } .settings-form-actions .btn { width: 100%; } .settings-note { padding: 28px 24px; } .client-settings .ws-heading { align-items: stretch; flex-direction: column; } .client-settings .ws-heading .btn { width: 100%; } }

@@ -1,0 +1,442 @@
+{
+  "title": "헤이엔터씨 화면 설계 인수인계",
+  "scope": "UI 화면·상태·이동만 제공. 인증·통신·업로드·권한 변경과 실제 콘텐츠는 연결하지 않음.",
+  "source": "https://chatgpt.com/space/page_c61a1d567c2c819193662ea55b8ad893",
+  "reviewPath": "/#/screens",
+  "screens": [
+    {
+      "id": "P01",
+      "title": "서비스 홈",
+      "layout": "T1",
+      "path": "/home"
+    },
+    {
+      "id": "P02",
+      "title": "서비스 전체 소개",
+      "layout": "T1",
+      "path": "/services"
+    },
+    {
+      "id": "P03",
+      "title": "서비스 분야 상세",
+      "layout": "T1",
+      "path": "/services/video",
+      "variants": [
+        "/services/video",
+        "/services/artist",
+        "/services/creator",
+        "/services/press",
+        "/services/design",
+        "/services/print"
+      ]
+    },
+    {
+      "id": "P04",
+      "title": "고객 유형별 솔루션",
+      "layout": "T1",
+      "path": "/solutions/company",
+      "variants": [
+        "/solutions/company",
+        "/solutions/institution",
+        "/solutions/personal"
+      ]
+    },
+    {
+      "id": "P05",
+      "title": "레퍼런스 목록",
+      "layout": "T2",
+      "path": "/references"
+    },
+    {
+      "id": "P06",
+      "title": "레퍼런스 상세",
+      "layout": "T3",
+      "path": "/references/goheung"
+    },
+    {
+      "id": "P07",
+      "title": "예산과 목표 입력",
+      "layout": "T4",
+      "path": "/budget"
+    },
+    {
+      "id": "P08",
+      "title": "홍보 구성 결과와 비교",
+      "layout": "T4",
+      "path": "/plans"
+    },
+    {
+      "id": "P09",
+      "title": "제작 파트너 목록",
+      "layout": "T2",
+      "path": "/partners"
+    },
+    {
+      "id": "P10",
+      "title": "제작 파트너 공개 프로필",
+      "layout": "T3",
+      "path": "/partners/local-frame"
+    },
+    {
+      "id": "P11",
+      "title": "아티스트 목록",
+      "layout": "T2",
+      "path": "/artists"
+    },
+    {
+      "id": "P12",
+      "title": "아티스트 공개 프로필",
+      "layout": "T3",
+      "path": "/artists/on-stage"
+    },
+    {
+      "id": "P13",
+      "title": "진행 안내와 FAQ",
+      "layout": "T1",
+      "path": "/guide"
+    },
+    {
+      "id": "P14",
+      "title": "회사와 언론보도",
+      "layout": "T1",
+      "path": "/about"
+    },
+    {
+      "id": "P15",
+      "title": "상담 진입",
+      "layout": "T5",
+      "path": "/home",
+      "presentation": "프로젝트 상담 모달",
+      "trigger": "[data-action=\"brief\"]"
+    },
+    {
+      "id": "P16",
+      "title": "파트너와 아티스트 참여 안내",
+      "layout": "T1",
+      "path": "/participate"
+    },
+    {
+      "id": "A01",
+      "title": "로그인과 데모 진입",
+      "layout": "T10",
+      "path": "/login"
+    },
+    {
+      "id": "A02",
+      "title": "가입 유형과 기본 계정",
+      "layout": "T5",
+      "path": "/signup"
+    },
+    {
+      "id": "A03",
+      "title": "인증과 계정 복구",
+      "layout": "T10",
+      "path": "/verify",
+      "variants": [
+        "/verify",
+        "/recover",
+        "/reset-password"
+      ]
+    },
+    {
+      "id": "A04",
+      "title": "의뢰자 초기 정보",
+      "layout": "T5",
+      "path": "/onboarding"
+    },
+    {
+      "id": "A05",
+      "title": "사업자와 아티스트 등록",
+      "layout": "T5",
+      "path": "/join"
+    },
+    {
+      "id": "A06",
+      "title": "조직과 프로젝트 초대",
+      "layout": "T10",
+      "path": "/invite",
+      "variants": [
+        "/invite",
+        "/invite?state=expired"
+      ]
+    },
+    {
+      "id": "C01",
+      "title": "워크스페이스 홈",
+      "layout": "T6",
+      "path": "/workspace",
+      "entry": "의뢰자 역할 선택 후 화면 열기"
+    },
+    {
+      "id": "C02",
+      "title": "내 프로젝트 목록",
+      "layout": "T6",
+      "path": "/workspace/projects",
+      "entry": "의뢰자 역할 선택 후 화면 열기"
+    },
+    {
+      "id": "C03",
+      "title": "프로젝트 생성",
+      "layout": "T5",
+      "path": "/workspace/new",
+      "entry": "의뢰자 역할 선택 후 화면 열기"
+    },
+    {
+      "id": "C04",
+      "title": "프로젝트 개요",
+      "layout": "T7",
+      "path": "/workspace/projects/autumn/overview",
+      "entry": "의뢰자 역할 선택 후 화면 열기"
+    },
+    {
+      "id": "C05",
+      "title": "브리프 확인과 수정",
+      "layout": "T7",
+      "path": "/workspace/projects/autumn/brief",
+      "entry": "의뢰자 역할 선택 후 화면 열기"
+    },
+    {
+      "id": "C06",
+      "title": "제안서 목록",
+      "layout": "T6",
+      "path": "/workspace/projects/autumn/proposals",
+      "entry": "의뢰자 역할 선택 후 화면 열기"
+    },
+    {
+      "id": "C07",
+      "title": "제안 상세와 버전 비교",
+      "layout": "T7",
+      "path": "/workspace/projects/autumn/compare",
+      "entry": "의뢰자 역할 선택 후 화면 열기"
+    },
+    {
+      "id": "C08",
+      "title": "일정과 제작 업무",
+      "layout": "T7",
+      "path": "/workspace/projects/autumn/schedule",
+      "entry": "의뢰자 역할 선택 후 화면 열기"
+    },
+    {
+      "id": "C09",
+      "title": "예산과 범위 내역",
+      "layout": "T7",
+      "path": "/workspace/projects/autumn/budget",
+      "entry": "의뢰자 역할 선택 후 화면 열기"
+    },
+    {
+      "id": "C10",
+      "title": "결과물 검토",
+      "layout": "T7",
+      "path": "/workspace/projects/autumn/deliverables",
+      "entry": "의뢰자 역할 선택 후 화면 열기"
+    },
+    {
+      "id": "C11",
+      "title": "참여자와 접근 범위",
+      "layout": "T7",
+      "path": "/workspace/projects/autumn/people",
+      "entry": "의뢰자 역할 선택 후 화면 열기"
+    },
+    {
+      "id": "C12",
+      "title": "완료와 결과 정리",
+      "layout": "T7",
+      "path": "/workspace/projects/autumn/completion",
+      "entry": "의뢰자 역할 선택 후 화면 열기"
+    },
+    {
+      "id": "C13",
+      "title": "저장한 콘텐츠",
+      "layout": "T2",
+      "path": "/workspace/saved",
+      "entry": "의뢰자 역할 선택 후 화면 열기"
+    },
+    {
+      "id": "C14",
+      "title": "기관과 개인 정보",
+      "layout": "T10",
+      "path": "/workspace/settings",
+      "entry": "의뢰자 역할 선택 후 화면 열기"
+    },
+    {
+      "id": "S01",
+      "title": "공급자 업무 홈",
+      "layout": "T6",
+      "path": "/collab?role=partners"
+    },
+    {
+      "id": "S02",
+      "title": "프로필 관리",
+      "layout": "T8",
+      "path": "/collab/profile?role=partners"
+    },
+    {
+      "id": "S03",
+      "title": "포트폴리오 편집",
+      "layout": "T8",
+      "path": "/collab/portfolio?role=partners"
+    },
+    {
+      "id": "S04",
+      "title": "프로젝트 요청과 업무 목록",
+      "layout": "T6",
+      "path": "/collab/requests?role=partners"
+    },
+    {
+      "id": "S05",
+      "title": "공유받은 요청 상세",
+      "layout": "T7",
+      "path": "/collab/requests/autumn?role=partners",
+      "variants": [
+        "/collab/requests/autumn?role=partners",
+        "/collab/requests/autumn?role=artists"
+      ]
+    },
+    {
+      "id": "S06",
+      "title": "견적과 출연 조건 제출",
+      "layout": "T5",
+      "path": "/collab/quote?role=partners"
+    },
+    {
+      "id": "S07",
+      "title": "배정 업무와 결과 제출",
+      "layout": "T7",
+      "path": "/collab/projects/local-story?role=partners"
+    },
+    {
+      "id": "M01",
+      "title": "운영 업무 홈과 요청 큐",
+      "layout": "T6",
+      "path": "/staff"
+    },
+    {
+      "id": "M02",
+      "title": "내부 프로젝트 상세",
+      "layout": "T7",
+      "path": "/staff/projects/autumn"
+    },
+    {
+      "id": "M03",
+      "title": "브리프 검토",
+      "layout": "T7",
+      "path": "/staff/projects/autumn"
+    },
+    {
+      "id": "M04",
+      "title": "파트너와 아티스트 구성",
+      "layout": "T7",
+      "path": "/staff/projects/autumn/people"
+    },
+    {
+      "id": "M05",
+      "title": "종합 제안 작성",
+      "layout": "T8",
+      "path": "/staff/projects/autumn"
+    },
+    {
+      "id": "M06",
+      "title": "제안 검토와 공유",
+      "layout": "T7",
+      "path": "/staff/projects/autumn/share"
+    },
+    {
+      "id": "M07",
+      "title": "일정과 업무 배정",
+      "layout": "T7",
+      "path": "/staff/projects/autumn/schedule"
+    },
+    {
+      "id": "M08",
+      "title": "결과물 검수와 완료 관리",
+      "layout": "T7",
+      "path": "/staff/projects/autumn/review"
+    },
+    {
+      "id": "M09",
+      "title": "사업자와 아티스트 검토",
+      "layout": "T6",
+      "path": "/staff/reviews",
+      "variants": [
+        "/staff/reviews",
+        "/staff/reviews/local-frame",
+        "/staff/reviews?state=revise",
+        "/staff/reviews?state=published"
+      ]
+    },
+    {
+      "id": "M10",
+      "title": "레퍼런스와 보도 콘텐츠 관리",
+      "layout": "T8",
+      "path": "/staff/content",
+      "variants": [
+        "/staff/content",
+        "/staff/content?type=press",
+        "/staff/content/edit"
+      ]
+    },
+    {
+      "id": "M11",
+      "title": "운영 설정과 업무 집계",
+      "layout": "T10",
+      "path": "/staff/settings",
+      "variants": [
+        "/staff/settings",
+        "/staff/settings?tab=rules",
+        "/staff/settings?tab=notifications"
+      ]
+    },
+    {
+      "id": "G01",
+      "title": "메시지함과 프로젝트 대화",
+      "layout": "T9",
+      "path": "/workspace/messages"
+    },
+    {
+      "id": "G02",
+      "title": "문서함과 미리보기",
+      "layout": "T9",
+      "path": "/workspace/documents"
+    },
+    {
+      "id": "G03",
+      "title": "알림 센터",
+      "layout": "T6",
+      "path": "/notifications"
+    },
+    {
+      "id": "G04",
+      "title": "내 계정과 알림 설정",
+      "layout": "T10",
+      "path": "/preferences"
+    },
+    {
+      "id": "G05",
+      "title": "약관과 개인정보 및 이용 안내",
+      "layout": "T10",
+      "path": "/terms",
+      "variants": [
+        "/terms",
+        "/privacy"
+      ]
+    },
+    {
+      "id": "G06",
+      "title": "접근 오류와 복구",
+      "layout": "T10",
+      "path": "/system",
+      "variants": [
+        "/system?state=not-found",
+        "/system?state=denied",
+        "/system?state=connection",
+        "/system?state=expired",
+        "/system?state=empty",
+        "/system?state=search",
+        "/system?state=loading",
+        "/system?state=unavailable",
+        "/system?state=form-error"
+      ]
+    }
+  ],
+  "implementationBoundary": "새 화면의 확인·공유·업로드 UI는 화면 이동과 패널 표시만 제공하며 실제 업무를 실행하지 않음."
+}

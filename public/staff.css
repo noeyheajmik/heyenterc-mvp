@@ -1,0 +1,13 @@
+.staff-log { padding: 0; margin: 0; list-style: none; }
+.staff-log li { display: flex; gap: 12px; padding: 18px 0; border-top: 1px solid #e3e7df; font-size: 13px; line-height: 1.8; }
+.staff-log svg { width: 18px; height: 18px; flex: 0 0 18px; color: #536158; margin-top: 3px; }
+.staff-shell .collab-facts { margin-bottom: 24px; }
+.staff-shell .collab-content .ws-heading > .btn { flex-shrink: 0; }
+.staff-shell .btn:disabled { opacity: .45; cursor: not-allowed; }
+.staff-shell .collab-message-list { max-height: 320px; }
+.staff-shell .ws-heading h1 { word-break: keep-all; }
+@media (max-width: 700px) {
+  .staff-shell .ws-sidebar nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .staff-shell .ws-heading { flex-direction: column; }
+  .staff-shell .collab-request-row { grid-template-columns: 44px minmax(0, 1fr) auto; }
+}

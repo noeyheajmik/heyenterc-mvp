@@ -124,3 +124,7 @@
   .collab-shell .ws-sidebar nav a > span { display: none; }
   .collab-shell .ws-sidebar nav a > svg { flex-shrink: 0; }
 }
+
+.network-heading-actions .btn { min-height: 54px; min-width: 220px; justify-content: space-between; padding: 16px 24px; font-size: 14px; }
+@media (max-width: 1200px) { .network-heading-actions { align-items: stretch; } }
+@media (max-width: 600px) { .network-heading-actions .btn { min-width: 0; width: 100%; } }

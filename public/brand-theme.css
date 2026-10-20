@@ -4329,3 +4329,8 @@ select:focus-visible,
   .ws-deliverable-grid > div,
   .ws-deliverable-grid > div:nth-child(2) { padding: 24px; }
 }
+
+/* Pill filters have no underline; leave room for a clean keyboard focus ring. */
+.reference-filters { border-bottom: 0; overflow: visible; padding: 5px; gap: 10px; }
+.filter-button.active::after { content: none; display: none; }
+.filter-button:focus-visible { outline: 2px solid var(--forest); outline-offset: 3px; }

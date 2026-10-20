@@ -1,3 +1,4 @@
+import { createWorkspace } from './workspace.js';
 import { createExplorer } from './explore.js';
 
 const $ = selector => document.querySelector(selector);
@@ -130,7 +131,8 @@ document.addEventListener('click', event => {
   if (action === 'partners' || action === 'artists') { partnerInfo(action === 'artists'); return; }
   if (action === 'join') { showModal('새로운 연결을 함께 만들어가요.', `<p>지역 홍보를 함께할 제작 사업자와 아티스트를 위한 협업 안내입니다.</p><div class="partner-types"><div>${icon('film')}<h3>제작 사업자</h3><p>전문 분야, 수행 지역, 제작 범위와 공개 가능한 포트폴리오를 준비해 주세요.</p></div><div>${icon('mic')}<h3>아티스트·관리 담당자</h3><p>활동 소개와 미디어, 출연 가능한 역할, 관리 주체와 협업 조건을 준비해 주세요.</p></div></div><p class="fine-print" style="margin-top:20px">파트너 등록 화면은 다음 단계에서 구현합니다. 지금은 협업 관심 내용을 메모로 정리할 수 있습니다.</p><div class="modal-actions"><button class="btn primary" data-action="partner-memo">협업 관심 메모 만들기 ${icon('arrow')}</button></div>`, 'MAKE SOMETHING TOGETHER'); return; }
   if (action === 'partner-memo') { startBrief({ type: '파트너 참여', notes: '전문 분야와 포트폴리오, 협업 조건을 정리하고 싶습니다.' }); return; }
-  if (action === 'account') { showModal('하나의 프로젝트에서 이어지는 협업.', `<p>기관 담당자·개인 의뢰자, 제작 사업자, 아티스트의 계정을 통해 프로젝트와 제안, 자료를 함께 관리하는 흐름을 준비하고 있습니다.</p><div class="option-list"><div class="option-card"><h3>의뢰 담당자</h3><p>프로젝트 생성과 제안 검토, 문서·메시지 관리</p></div><div class="option-card"><h3>사업자와 아티스트</h3><p>프로필과 포트폴리오, 협업 요청과 업무 관리</p></div></div><p class="fine-print" style="margin-top:20px">현재는 메인 화면 MVP로, 로그인과 회원가입은 연결하지 않았습니다.</p><div class="modal-actions"><button class="btn primary" data-action="close-modal">서비스 먼저 둘러보기 ${icon('arrow')}</button></div>`, 'YOUR PROJECT WORKSPACE'); return; }
+  if (action === 'account') { workspace.enter(); return; }
+  if (action === 'workspace-draft') { workspace.startProject(briefDraft); return; }
   if (action === 'process') { showModal('기획부터 실행까지, 함께 정리합니다.', `<div class="option-list"><div class="option-card"><span>01 · 프로젝트 브리프</span><h3>목표와 조건을 먼저 확인해요</h3><p>홍보 목적, 예산, 일정과 참고 사례를 바탕으로 필요한 범위를 구체화합니다.</p></div><div class="option-card"><span>02 · 맞춤 제안</span><h3>콘텐츠와 사람을 함께 구성해요</h3><p>제작 범위와 참여자, 비용과 일정을 제안하고 의견을 주고받습니다.</p></div><div class="option-card"><span>03 · 제작과 결과물</span><h3>진행 과정과 피드백을 연결해요</h3><p>문서와 작업물을 정리하고 합의한 범위에 맞춰 결과물을 검토합니다.</p></div></div><div class="modal-actions"><button class="btn primary" data-action="brief">우리 프로젝트 메모하기 ${icon('arrow')}</button></div>`, 'HOW WE WORK'); return; }
   if (action === 'download-memo') { downloadMemo(); return; }
   if (action === 'edit-memo') { startBrief(); return; }
@@ -152,7 +154,7 @@ document.addEventListener('submit', event => {
     if (!briefDraft.title || !briefDraft.region) { toast('프로젝트 이름과 지역을 공백 없이 입력해 주세요.'); return; }
     const d = briefDraft;
     memo = `헤이엔터씨 상담 메모\n\n프로젝트: ${d.title}\n지역: ${d.region}\n의뢰 유형: ${d.type}\n총 예산(VAT 포함): ${d.budget}\n\n알리고 싶은 이야기\n${d.notes || '상담 시 함께 정리'}\n\n이 메모는 화면 체험용으로 작성되었으며 실제로 접수되지 않았습니다.`;
-    showModal('우리 프로젝트의 시작을 정리했어요.', `<p>상담 메모를 복사하거나 파일로 저장해 두세요.</p><div class="brief-success"><strong>${esc(d.title)}</strong><p><b>지역과 의뢰 유형</b>${esc(d.region)} · ${esc(d.type)}</p><p><b>총 예산 · VAT 포함</b>${esc(d.budget)}</p><p><b>알리고 싶은 이야기</b>${esc(d.notes || '상담 시 함께 정리').replaceAll('\n', '<br>')}</p></div><p class="fine-print" style="margin-top:18px">실제 제안 요청은 전송되지 않았습니다. 메모는 현재 화면에만 유지됩니다.</p><div class="modal-actions"><button class="btn secondary" data-action="edit-memo">수정하기</button><button class="btn secondary" data-action="copy-memo">메모 복사</button><button class="btn primary" data-action="download-memo">${icon('download')}파일로 저장</button></div>`, 'YOUR FIRST PROJECT NOTE');
+    showModal('우리 프로젝트의 시작을 정리했어요.', `<p>메모를 프로젝트 초안으로 이어가거나 복사·파일로 저장해 두세요.</p><div class="brief-success"><strong>${esc(d.title)}</strong><p><b>지역과 의뢰 유형</b>${esc(d.region)} · ${esc(d.type)}</p><p><b>총 예산 · VAT 포함</b>${esc(d.budget)}</p><p><b>알리고 싶은 이야기</b>${esc(d.notes || '상담 시 함께 정리').replaceAll('\n', '<br>')}</p></div><p class="fine-print" style="margin-top:18px">실제 제안 요청은 전송되지 않았습니다. 메모는 현재 화면에만 유지됩니다.</p><div class="modal-actions"><button class="btn primary" data-action="workspace-draft">프로젝트 초안으로 이어가기 ${icon('arrow')}</button><button class="btn secondary" data-action="edit-memo">수정하기</button><button class="btn secondary" data-action="copy-memo">메모 복사</button><button class="btn secondary" data-action="download-memo">${icon('download')}파일로 저장</button></div>`, 'YOUR FIRST PROJECT NOTE');
   }
 });
 
@@ -160,7 +162,10 @@ document.querySelectorAll('svg').forEach(el => el.setAttribute('aria-hidden', 't
 renderServices();
 renderReferences();
 
+const workspace = createWorkspace({ icon, esc, services, toast, showModal, closeMenus });
+
 const explorer = createExplorer({
+  workspace,
   references, services, icon, esc, startBrief, closeMenus, toast,
   getSaved: () => saved,
   toggleSaved(id) {

@@ -142,3 +142,16 @@
 .assignment-note { border-top: 1px solid #e0e5dc; padding: 16px 0; font-size: 13px; line-height: 1.8; }
 .assignment-note p { margin: 8px 0 0; color: #536158; }
 @media (max-width: 700px) { .assignment-panel .btn { width: 100%; } }
+
+.brief-update-card { padding: 24px 0; border-top: 1px solid #e0e5dc; overflow-wrap: anywhere; }
+.brief-update-card:first-of-type { margin-top: 24px; }
+.brief-update-card h3 { margin: 0; font-size: 16px; line-height: 1.5; }
+.brief-update-reason { font-size: 15px; font-weight: 600; line-height: 1.8; }
+.brief-update-form { padding-top: 28px; margin-top: 24px; border-top: 1px solid #e0e5dc; }
+.brief-review-form { padding-top: 24px; }
+.brief-update-actions { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.brief-updates .ws-panel-heading { flex-wrap: wrap; gap: 12px; }
+@media (max-width: 700px) { .brief-update-actions { flex-direction: column-reverse; } .brief-updates .btn { width: 100%; } }
+.ws-detail-main > .brief-updates { margin-top: 28px; }
+.brief-updates .field { margin-bottom: 22px; }
+.brief-updates .form-row { align-items: start; }

@@ -1,3 +1,5 @@
+import { createBriefUpdates } from './brief-updates.js';
+
 import { createClientSettings } from './settings.js';
 
 import { createReports } from './reports.js';
@@ -18,8 +20,9 @@ export function createWorkspace({ icon, esc, services, toast, showModal, closeMe
     { id: 'festival', title: '가을 로컬 페스티벌 홍보', region: '지역 협의 · 샘플', goal: GOALS[1], budget: BUDGETS[4], date: '', status: '제작 진행', services: ['artist', 'design', 'video'], notes: '공연과 로컬 브랜드가 어우러지는 축제의 사전 홍보물과 현장 기록을 준비합니다.', manager: '행사 매니저 · 가상 담당자', tasks: [{ title: '홍보 콘셉트 정리', stage: '완료', due: '1단계' }, { title: '키비주얼 시안 검토', stage: '검토 중', due: '2단계' }, { title: '출연진·현장 조건 확인', stage: '예정', due: '확인 후' }], messages: [message('키비주얼 시안을 검토하는 단계의 가상 프로젝트입니다. 일정·결과물 탭에서 검토 의견을 남겨보세요.')], documents: [doc('축제 홍보 기획 메모', '기획', '축제의 주제와 관객을 먼저 정리합니다.\n공연·진행·홍보물·기록 영상의 업무 범위를 나눠 검토합니다.\n이 내용은 가상 프로젝트의 구성 예시입니다.')], proposal: true, reviewed: true, reviewedVersions: ['v1.0'], feedback: '', version: 'v1.0', latestVersion: 'v1.0' },
     { id: 'local-brand', title: '로컬 브랜드 스토리 콘텐츠', region: '지역 미정', goal: GOALS[2], budget: BUDGETS[0], date: '', status: '초안', services: ['press', 'video'], notes: '브랜드의 시작과 만드는 사람의 이야기를 콘텐츠로 정리하고 싶어요.', manager: '', tasks: [], messages: [], documents: [], proposal: false, reviewed: false, feedback: '', version: 'v1.0' }
   ];
+  const briefUpdates = createBriefUpdates({ projects, budgets: BUDGETS, icon, esc, toast, doc, message });
   const reports = createReports({ projects, icon, esc, toast, doc, message });
-  const staff = createStaff({ reports, projects, icon, esc, toast, message, doc, hub, profiles });
+  const staff = createStaff({ reports, briefUpdates, projects, icon, esc, toast, message, doc, hub, profiles });
   const state = { role: '', next: '/workspace', outlet: null, path: '', params: null, q: '', filter: '전체', draft: null, step: 0, context: false, messageDrafts: {}, feedbackDrafts: {}, deliveryDrafts: {}, costReviewDrafts: {} };
   const settings = createClientSettings({ icon, esc, toast, getRole: () => state.role, refresh });
   projects.forEach(p => { p.client = { ...settings.current('institution'), role: 'institution' }; });
@@ -48,9 +51,9 @@ export function createWorkspace({ icon, esc, services, toast, showModal, closeMe
     shell(`${heading('YOUR NEXT LOCAL STORY', '반가워요, ' + owner() + '님.', '우리 지역의 다음 이야기를 함께 만들어가요.', '<a class="btn primary" href="#/workspace/new" data-ws-action="new">새 프로젝트 만들기 ' + icon('plus') + '</a>')}<div class="ws-stats">${[['진행 중인 프로젝트', projects.filter(p => p.status !== '초안').length, 'projects', ''], ['검토할 제안서', pending.length, 'projects', '?status=제안 검토'], ['작성 중인 초안', projects.filter(p => p.status === '초안').length, 'projects', '?status=초안']].map(([label, count, route, query]) => `<a href="#/workspace/${route}${query}"><span>${label}</span><strong>${count}<small>개</small></strong>${icon('arrow')}</a>`).join('')}</div><div class="ws-home-columns"><section class="ws-panel ws-todo"><div class="ws-panel-heading"><h2>먼저 확인해 주세요.</h2><span class="ws-small-label">NEXT ACTION</span></div>${pending.length ? pending.map(p => `<a class="ws-action-row" href="${href(p, 'proposals')}"><span>${icon('file')}</span><div><strong>새로운 홍보 구성안이 준비되었어요.</strong><p>${esc(p.title)} · 샘플 제안 ${p.version}</p></div>${icon('arrow')}</a>`).join('') : '<p class="ws-muted">현재 검토할 제안서가 없습니다.</p>'}<a class="ws-action-row" href="${href(projects.find(p => p.status === '초안') || projects[0], projects.some(p => p.status === '초안') ? 'brief' : 'overview')}"><span>${icon('pen')}</span><div><strong>아직 막연한 기획도 괜찮아요.</strong><p>브리프에 중요한 조건부터 남겨보세요.</p></div>${icon('arrow')}</a></section><aside class="ws-start-card"><span class="eyebrow">MAKE IT A GOOD START</span><h2>무엇부터<br>준비하면 좋을까요?</h2><p>결과물의 종류와 활용 채널을 정하면<br>제안을 더 구체적으로 살펴볼 수 있어요.</p><a class="text-link" href="#/budget">예산별 홍보 구성 살펴보기 ${icon('arrow')}</a></aside></div><section class="ws-panel"><div class="ws-panel-heading"><h2>이어서 진행할 프로젝트</h2><a class="text-link" href="#/workspace/projects">전체 보기 ${icon('arrow')}</a></div>${projectRows(projects.slice(0, 4))}</section>`, 'home');
   }
   function projectList(params) {
-    state.filter = ['전체', '초안', '브리프 확인', '제안 검토', '제작 진행'].includes(params.get('status')) ? params.get('status') : '전체';
+    state.filter = ['전체', '초안', '브리프 확인', '제안 검토', '제작 진행', '완료'].includes(params.get('status')) ? params.get('status') : '전체';
     document.title = '내 프로젝트 — 헤이엔터씨';
-    shell(`${heading('MY PROJECTS', '내 프로젝트', '아이디어부터 결과물까지, 프로젝트의 흐름을 한눈에.', '<a class="btn primary" href="#/workspace/new" data-ws-action="new">새 프로젝트 ' + icon('plus') + '</a>')}<div class="ws-list-tools"><div class="ws-search">${icon('folder')}<label class="sr-only" for="ws-project-search">프로젝트 검색</label><input id="ws-project-search" type="search" value="${esc(state.q)}" placeholder="프로젝트 이름 또는 지역 검색" maxlength="100"></div><label class="sr-only" for="ws-status-filter">프로젝트 상태</label><select class="input" id="ws-status-filter">${['전체', '초안', '브리프 확인', '제안 검토', '제작 진행'].map(s => `<option ${s === state.filter ? 'selected' : ''}>${s}</option>`).join('')}</select></div><div class="ws-result-count" id="ws-project-count" role="status"></div><section class="ws-panel" id="ws-project-results"></section>`, 'projects');
+    shell(`${heading('MY PROJECTS', '내 프로젝트', '아이디어부터 결과물까지, 프로젝트의 흐름을 한눈에.', '<a class="btn primary" href="#/workspace/new" data-ws-action="new">새 프로젝트 ' + icon('plus') + '</a>')}<div class="ws-list-tools"><div class="ws-search">${icon('folder')}<label class="sr-only" for="ws-project-search">프로젝트 검색</label><input id="ws-project-search" type="search" value="${esc(state.q)}" placeholder="프로젝트 이름 또는 지역 검색" maxlength="100"></div><label class="sr-only" for="ws-status-filter">프로젝트 상태</label><select class="input" id="ws-status-filter">${['전체', '초안', '브리프 확인', '제안 검토', '제작 진행', '완료'].map(s => `<option ${s === state.filter ? 'selected' : ''}>${s}</option>`).join('')}</select></div><div class="ws-result-count" id="ws-project-count" role="status"></div><section class="ws-panel" id="ws-project-results"></section>`, 'projects');
     listResults();
   }
   function listResults() {
@@ -92,7 +95,7 @@ export function createWorkspace({ icon, esc, services, toast, showModal, closeMe
     document.title = `${p.title} — 헤이엔터씨`;
     let content;
     if (tab === 'summary') content = reports.render(p);
-    else if (tab === 'brief') content = `<section class="ws-panel"><div class="ws-panel-heading"><h2>프로젝트 브리프</h2>${p.status === '초안' ? `<button class="btn secondary small" data-ws-edit="${p.id}">초안 수정 ${icon('pen')}</button>` : ''}</div>${briefSummary(p)}</section>`;
+    else if (tab === 'brief') content = `<section class="ws-panel"><div class="ws-panel-heading"><h2>프로젝트 브리프</h2>${p.status === '초안' ? `<button class="btn secondary small" data-ws-edit="${p.id}">초안 수정 ${icon('pen')}</button>` : ''}</div>${briefSummary(p)}</section>` + briefUpdates.client(p, refresh);
     else if (tab === 'proposals') content = proposal(p);
     else if (tab === 'messages') content = messages(p);
     else if (tab === 'documents') content = documents(p);

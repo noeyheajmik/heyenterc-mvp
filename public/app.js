@@ -37,8 +37,8 @@ function toast(text) {
 }
 
 function renderServices() {
-  $('#services-grid').innerHTML = services.map(s => `<button class="service-card" data-service="${s.id}" aria-label="${s.name} 서비스 자세히 보기"><svg class="service-icon" aria-hidden="true"><use href="#i-${s.icon}"/></svg><svg class="card-arrow" aria-hidden="true"><use href="#i-up-right"/></svg><h3>${s.name}</h3><p>${s.short}</p></button>`).join('');
-  $('#mega-links').innerHTML = services.map(s => `<button class="mega-link" data-service="${s.id}">${icon(s.icon)}<span><strong>${s.name}</strong><small>${s.examples[0]}</small></span></button>`).join('');
+  $('#services-grid').innerHTML = services.map(s => `<a class="service-card" href="#/services/${s.id}" aria-label="${s.name} 서비스 자세히 보기"><svg class="service-icon" aria-hidden="true"><use href="#i-${s.icon}"/></svg><svg class="card-arrow" aria-hidden="true"><use href="#i-up-right"/></svg><h3>${s.name}</h3><p>${s.short}</p></a>`).join('');
+  $('#mega-links').innerHTML = services.map(s => `<a class="mega-link" href="#/services/${s.id}">${icon(s.icon)}<span><strong>${s.name}</strong><small>${s.examples[0]}</small></span></a>`).join('');
 }
 
 function renderReferences() {
@@ -167,7 +167,7 @@ const workspace = createWorkspace({ hub: collaborationHub, profiles: PROFILES, i
 const network = createNetwork({ icon, esc, toast, startBrief, closeMenus, hub: collaborationHub });
 const explorer = createExplorer({
   workspace, network,
-  references, services, icon, esc, startBrief, closeMenus, toast,
+  references, services, icon, esc, showModal, startBrief, closeMenus, toast,
   getSaved: () => saved,
   toggleSaved(id) {
     saved = saved.includes(id) ? saved.filter(item => item !== id) : [...saved, id];

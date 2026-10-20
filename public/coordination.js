@@ -19,7 +19,7 @@ export function createCoordination({ hub, profiles, projects, icon, esc, toast, 
     const p = projects.find(p => p.id === form.dataset.project); const d = state.drafts[p.id]; const profile = profiles.find(profile => profile.id === d.profileId);
     if (!profile || !d.role.trim() || !d.scope.trim()) { toast('후보·요청 역할·작업 범위를 확인해 주세요.'); return; }
     const request = { id: 'request-' + crypto.randomUUID(), projectId: p.id, profileId: profile.id, profileName: profile.name, title: p.title, region: p.region, kind: profile.kind, role: d.role.trim(), scope: d.scope.trim(), timing: d.timing.trim() || '희망 일정 협의', budget: d.budget.trim() || '범위 확인 후 협의', checks: [d.conditions.trim() || '일정과 작업·출연 범위 확인', '가능한 역할과 비용 조건 확인'], status: '회신 전', response: { availability: 'discuss', date: '', fee: '', note: '' }, sentResponse: null, replied: false };
-    hub.requests.unshift(request); state.drafts[p.id] = blank(); log.push(`${p.title} · ${profile.name} 협업 요청 구성`); p.messages.push(message(`${profile.name}에게 ${request.role} 역할의 협업 요청을 워크스페이스에서 구성했습니다. 실제 전송은 아닙니다.`)); refresh(); toast('상대 역할의 협업 요청 화면에 연결했어요.');
+    hub.requests.unshift(request); state.drafts[p.id] = blank(); log.push(`${p.title} · ${profile.name} 협업 요청 구성`); p.messages.push(message(`${profile.name}에게 ${request.role} 역할의 협업 요청을 워크스페이스에서 구성했습니다.`)); refresh(); toast('상대 역할의 협업 요청 화면에 연결했어요.');
   });
   document.addEventListener('click', event => {
     const el = event.target.closest('[data-coordination-connect],[data-coordination-focus]'); if (!el) return;

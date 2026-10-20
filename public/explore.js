@@ -1,3 +1,4 @@
+import { createUIPages } from './ui-pages.js';
 import { campaignKeys, campaignPreset } from './campaign-templates.js';
 import { companyPage } from './company.js';
 
@@ -5,7 +6,8 @@ const BUDGETS = ['미정', '500만원 미만', '500만~1,000만원', '1,000만~3
 const GOALS = ['관광·지역 홍보', '축제·행사', '브랜드·콘텐츠'];
 const GOAL_KEYS = ['tourism', 'festival', 'brand'];
 
-export function createExplorer({ workspace, network, references: homeReferences, services, icon, esc, startBrief, closeMenus, toast, getSaved, toggleSaved }) {
+export function createExplorer({ workspace, network, references: homeReferences, services, icon, esc, showModal, startBrief, closeMenus, toast, getSaved, toggleSaved }) {
+  const uiPages = createUIPages({ icon, esc, services, showModal });
   const all = [
     ...homeReferences.map((r, i) => ({ ...r, title: r.title.replace('<br>', ' '), region: '전남', location: '전남 고흥', type: 'real', serviceIds: i === 0 ? ['video', 'artist'] : i === 1 ? ['creator', 'video'] : ['artist'], goal: i === 2 ? 'festival' : 'tourism', outputs: i === 0 ? ['관광 콘텐츠 기획', '출연진 섭외', '유튜브 콘텐츠 제작'] : i === 1 ? ['지역 맞춤 여행 콘텐츠', '브랜드 제품과 콘텐츠 연결', '유튜브 콘텐츠 기획·제작'] : ['아티스트·프로듀서 참여', '관광 브랜드 음악 프로젝트'], approach: i === 0 ? '지역의 장소를 여행자의 일상과 연결하고, 출연진의 시선으로 관광 자원을 소개한 사례입니다.' : i === 1 ? '지역을 여행하는 이야기 속에서 아웃도어 브랜드의 매력을 함께 전달하는 공동 캠페인입니다.' : '지역의 정체성을 음악이라는 매체에 담아 관광 브랜딩으로 연결한 사례입니다.' })),
     { id: 'jeju', client: '제주시 · 모두투어 · 한일고속', title: '여행 예능으로 연결한 제주와 브랜드', image: 'jeju-coast', cover: 'HELLO, JEJU.', category: ['tourism', 'brand'], tags: ['여행 예능', '브랜드 공동 캠페인'], intro: '배우와 크리에이터가 참여한 제주 지역 맞춤형 여행 예능 콘텐츠를 기획·제작한 사례입니다.', range: '여행 예능 기획·제작, 출연진 섭외, 지자체·브랜드 공동 홍보', imageNote: '제주 해안의 분위기 사진이며 해당 예능의 실제 납품 장면이 아닙니다.', region: '제주', location: '제주', type: 'real', serviceIds: ['video', 'artist', 'creator'], goal: 'tourism', outputs: ['지역 맞춤 여행 예능', '출연진 섭외', '지자체·브랜드 공동 홍보'], approach: '관광지와 이동, 여행 경험을 하나의 콘텐츠로 묶고 지역과 기업이 함께 등장하는 구성을 만들었습니다.' },
@@ -158,22 +160,24 @@ export function createExplorer({ workspace, network, references: homeReferences,
     const isHome = !isPage || url.pathname === '/home';
     home.hidden = !isHome; outlet.hidden = isHome;
     document.querySelectorAll('.primary-nav a').forEach(a => { const active = !isHome && a.getAttribute('href') === (url.pathname.startsWith('/references') ? '#/references' : ['/budget', '/plans'].includes(url.pathname) ? '#/budget' : url.pathname.startsWith('/partners') ? '#/partners' : url.pathname.startsWith('/artists') ? '#/artists' : ''); if (active) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+    const serviceToggle = document.getElementById('services-toggle'); if (url.pathname.startsWith('/services') || url.pathname.startsWith('/solutions')) serviceToggle?.setAttribute('aria-current', 'page'); else serviceToggle?.removeAttribute('aria-current');
     if (isHome) {
       document.title = '헤이엔터씨 — 브랜드와 지역의 가능성을 연결합니다';
       if (location.hash && !isPage) { requestAnimationFrame(() => document.getElementById(location.hash.slice(1))?.scrollIntoView()); } else window.scrollTo(0, 0);
       return;
     }
-    if (network.render(outlet, url.pathname, url.searchParams)) { /* Public collaborator profiles and onboarding. */ }
+    if (uiPages.render(outlet, url.pathname, url.searchParams)) { /* Presentation-only page layouts. */ }
+    else if (network.render(outlet, url.pathname, url.searchParams)) { /* Public collaborator profiles and onboarding. */ }
     else if (workspace.render(outlet, url.pathname, url.searchParams)) { /* Workspace owns its content. */ }
     else if (url.pathname === '/about') { outlet.innerHTML = companyPage(icon); document.title = '회사소개 — 헤이엔터씨'; }
     else if (url.pathname === '/references') { catalog(url.searchParams); document.title = '레퍼런스 탐색 — 헤이엔터씨'; }
     else if (/^\/references\/[^/]+$/.test(url.pathname)) { detail(url.pathname.split('/')[2]); document.title = `${all.find(r => r.id === url.pathname.split('/')[2])?.title || '레퍼런스'} — 헤이엔터씨`; }
     else if (url.pathname === '/budget') { budgetPage(url.searchParams); document.title = '예산과 목표 정하기 — 헤이엔터씨'; }
     else if (url.pathname === '/plans') { plansPage(url.searchParams); document.title = '홍보 구성 비교 — 헤이엔터씨'; }
-    else { notFound(); document.title = '페이지를 찾을 수 없습니다 — 헤이엔터씨'; }
+    else { uiPages.render(outlet, '/system', new URLSearchParams()); document.title = '페이지를 찾을 수 없습니다 — 헤이엔터씨'; }
     if (url.pathname === '/references' && /^\/references\//.test(old)) window.scrollTo(0, state.listY); else window.scrollTo(0, 0);
     if (old) outlet.querySelector('h1')?.focus({ preventScroll: true });
-    if (url.pathname === '/about' && ['#team', '#founder'].includes(url.hash)) requestAnimationFrame(() => document.getElementById(url.hash.slice(1))?.scrollIntoView());
+    if (url.pathname === '/about' && ['#team', '#founder', '#press'].includes(url.hash)) requestAnimationFrame(() => document.getElementById(url.hash.slice(1))?.scrollIntoView());
   }
 
   document.addEventListener('click', event => {
